@@ -10,6 +10,7 @@ public class Hand : MonoBehaviour
     [SerializeField] private Card cardPrefab;
     [SerializeField] private WordDictionary wordDictionary;
     [SerializeField] private Field field;
+    [SerializeField] private Transform dropPreview;
 
     private List<Card> cards = new();
 
@@ -40,11 +41,22 @@ public class Hand : MonoBehaviour
         };
         card.draggable.dropped += _ =>
         {
+            dropPreview.gameObject.SetActive(false);
             field.AddCard(card);
             AddCard();
         };
+
+        card.draggable.preview += ShowPreview;
+        card.draggable.hidePreview += () => dropPreview.gameObject.SetActive(false);
     }
-    
+
+    private void ShowPreview(Draggable draggable)
+    {
+        dropPreview.gameObject.SetActive(true);
+        // Tweener.MoveToBounceOut(dropPreview, draggable.GetRoundedPos(), 0.2f);
+        dropPreview.transform.position = draggable.GetRoundedPos();
+    }
+
     private void PositionCards()
     {
         var basePos = transform.position + (cards.Count - 1) * 0.5f * Vector3.left;
