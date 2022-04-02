@@ -155,9 +155,10 @@ public class Field : MonoBehaviour
 
     private void ApplyTwist(Twist twist)
     {
+        showBoardButton.Hide();
         hand.SetState(true);
         
-        Debug.Log($"Applying twist {twist.Type} with letters {twist.FirstLetter} and {twist.SecondLetter}");
+        // Debug.Log($"Applying twist {twist.Type} with letters {twist.FirstLetter} and {twist.SecondLetter}");
         twistHolder.gameObject.SetActive(false);
         twistTitle.Hide();
 

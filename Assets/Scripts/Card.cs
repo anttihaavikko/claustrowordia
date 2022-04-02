@@ -1,5 +1,6 @@
 using System;
 using AnttiStarterKit.Extensions;
+using AnttiStarterKit.Managers;
 using TMPro;
 using UnityEngine;
 
@@ -72,6 +73,7 @@ public class Card : MonoBehaviour
 
     public void Explode()
     {
+        EffectManager.AddEffect(1, transform.position);
         gameObject.SetActive(false);
     }
 }
