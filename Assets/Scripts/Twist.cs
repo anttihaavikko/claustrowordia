@@ -25,5 +25,9 @@ public enum TwistType
 {
     Replace,
     Destroy,
-    AddCards
+    AddCards,
+    SlideUp,
+    SlideRight,
+    SlideLeft,
+    SlideDown
 }

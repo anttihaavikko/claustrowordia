@@ -2204,6 +2204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effects:
   - {fileID: 5427275002781990538, guid: 151e945063c9543d287a3bb3c0ad8ef7, type: 3}
+  - {fileID: 6419374109078250878, guid: b9d49f0d1823b4cc79baaa11b0827b41, type: 3}
   textPopupPrefab: {fileID: 7909968778489192744, guid: fe62f088d543e4524b62ba5abff82602, type: 3}
 --- !u!4 &1785284093
 Transform:

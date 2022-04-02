@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AnttiStarterKit.Animations;
 using AnttiStarterKit.Managers;
+using AnttiStarterKit.Visuals;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -31,6 +32,8 @@ public class Field : MonoBehaviour
 
     private void Start()
     {
+        EffectCamera.Effect(0.1f);
+        
         PlaceCard(new Vector3(-1f, -1f, 0));
         PlaceCard(new Vector3(1f, -1f, 0));
         PlaceCard(new Vector3(-1f, 1f, 0));
@@ -115,7 +118,7 @@ public class Field : MonoBehaviour
 
     private IEnumerator DoTwist()
     {
-        if (move % 10 != 0)
+        if (move == 0 || move % 10 != 0)
         {
             hand.SetState(true);
             yield break;
@@ -173,13 +176,90 @@ public class Field : MonoBehaviour
             case TwistType.AddCards:
                 StartCoroutine(GiveExtraCards());
                 break;
+            case TwistType.SlideUp:
+                StartCoroutine(SlideVertical(1));
+                break;
+            case TwistType.SlideRight:
+                StartCoroutine(SlideHorizontal(1));
+                break;
+            case TwistType.SlideLeft:
+                StartCoroutine(SlideHorizontal(-1));
+                break;
+            case TwistType.SlideDown:
+                StartCoroutine(SlideVertical(-1));
+                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
+    
+    private IEnumerator SlideVertical(int diff)
+    {
+        hand.SetState(false);
+        
+        var index = diff > 0 ? 0 : 6;
+        var edgeCards = grid.GetRow(index).Where(c => c).ToList();
+        grid.Remove(edgeCards);
+        
+        foreach (var c in edgeCards)
+        {
+            c.Explode();
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        for (var x = 0; x < 7; x++)
+        {
+            for (var y = index; y is < 7 and >= 0; y += diff)
+            {
+                var card = grid.Get(x, y + diff);
+                grid.Set(card, x, y);
+                
+                if (card)
+                {
+                    var t = card.transform;
+                    Tweener.MoveToBounceOut(t, t.position + Vector3.up * diff, 0.3f);
+                }
+            }
+        }
+
+        hand.SetState(true);
+    }
+
+    private IEnumerator SlideHorizontal(int diff)
+    {
+        hand.SetState(false);
+        
+        var index = diff > 0 ? 6 : 0;
+        var edgeCards = grid.GetColumn(index).Where(c => c).ToList();
+        grid.Remove(edgeCards);
+        
+        foreach (var c in edgeCards)
+        {
+            c.Explode();
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        for (var y = 0; y < 7; y++)
+        {
+            for (var x = index; x is < 7 and >= 0; x -= diff)
+            {
+                var card = grid.Get(x - diff, y);
+                grid.Set(card, x, y);
+                if (card)
+                {
+                    var t = card.transform;
+                    Tweener.MoveToBounceOut(t, t.position + Vector3.right * diff, 0.3f);
+                }
+            }
+        }
+
+        hand.SetState(true);
+    }
 
     private IEnumerator DestroyAll(string letter, string replacement = null)
     {
+        hand.SetState(false);
+        
         yield return new WaitForSeconds(0.5f);
         
         var cards = grid.All().Where(c => c && c.Letter == letter).ToList();
@@ -191,7 +271,11 @@ public class Field : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
-        if (replacement == null) yield break;
+        if (replacement == null)
+        {
+            hand.SetState(true);
+            yield break;
+        }
         
         yield return new WaitForSeconds(0.4f);
 
@@ -200,6 +284,8 @@ public class Field : MonoBehaviour
             var card = Instantiate(cardPrefab, p, Quaternion.identity);
             card.Setup(replacement);
             AddCard(card, false);
+
+            EffectManager.AddEffect(0, p);
             
             var x = Mathf.RoundToInt(p.x + 3);
             var y = Mathf.RoundToInt(-p.y + 3);
@@ -228,6 +314,8 @@ public class Field : MonoBehaviour
         var pos = new Vector3(x, y, 0) + Vector3.down;
         
         EffectManager.AddTextPopup(match.word.ToUpper(), pos);
+        
+        EffectCamera.Effect(0.1f);
         
         if (grid.All().All(c => !c || c.Matched || match.cards.Contains(c)))
         {
@@ -284,7 +372,11 @@ public class Field : MonoBehaviour
         {
             new Twist(TwistType.Replace, "Immigrant blues", "Replace all [1] tiles with [2] tiles."),
             new Twist(TwistType.Destroy, "Delay the inevitable", "Destroy all [1] tiles."),
-            new Twist(TwistType.AddCards, "Extra population", "Receive (3 extra) letter tiles.")
+            new Twist(TwistType.AddCards, "Extra population", "Receive (3 extra) letter tiles."),
+            new Twist(TwistType.SlideUp, "Southern refugees", "(Slide) the whole board (up) one tile."),
+            new Twist(TwistType.SlideDown, "Northern refugees", "(Slide) the whole board (down) one tile."),
+            new Twist(TwistType.SlideLeft, "Eastern refugees", "(Slide) the whole board (left) one tile."),
+            new Twist(TwistType.SlideRight, "Western refugees", "(Slide) the whole board (right) one tile.")
         };
     }
 
