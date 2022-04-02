@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using AnttiStarterKit.Animations;
 using AnttiStarterKit.Managers;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -12,9 +13,17 @@ public class Field : MonoBehaviour
     [SerializeField] private WordDictionary wordDictionary;
     [SerializeField] private Color markColor;
     [SerializeField] private Score scoreDisplay;
+    [SerializeField] private Appearer twistTitle;
+    [SerializeField] private RectTransform twistHolder;
+    [SerializeField] private TwistPanel twistPanelPrefab;
+    [SerializeField] private Hand hand;
+
+    public bool CanAct { get; private set; }
 
     private readonly TileGrid<Card> grid = new(7, 7);
     private readonly List<WordMatch> words = new();
+
+    private int move;
 
     private void Start()
     {
@@ -40,11 +49,15 @@ public class Field : MonoBehaviour
         var y = Mathf.RoundToInt(-p.y + 3);
         grid.Set(card, x, y);
 
+        move++;
+
         StartCoroutine(Check(x, y));
     }
     
     IEnumerator Check(int x, int y)
     {
+        hand.SetState(false);
+        
         var rowCards = grid.GetRow(y).ToList();
         var colCards = grid.GetColumn(x).ToList();
         
@@ -84,6 +97,75 @@ public class Field : MonoBehaviour
 
             yield return new WaitForSeconds(0.5f);
         }
+
+        yield return DoTwist();
+    }
+
+    private IEnumerator DoTwist()
+    {
+        if (move % 10 != 0)
+        {
+            hand.SetState(true);
+            yield break;
+        }
+        
+        foreach (Transform child in twistHolder)
+        {
+            Destroy(child.gameObject);
+        }
+        
+        move = 0;
+        
+        yield return new WaitForSeconds(0.25f);
+        
+        twistTitle.Show();
+
+        yield return new WaitForSeconds(1f);
+        
+        twistHolder.gameObject.SetActive(true);
+        
+        GetTwists().OrderBy(_ => Random.value).Take(3).ToList().ForEach(t =>
+        {
+            AddLettersTo(t);
+            var twist = Instantiate(twistPanelPrefab, twistHolder);
+            twist.Setup(t);
+            twist.button.onClick.AddListener(() =>
+            {
+                ApplyTwist(t);
+                twist.button.onClick.RemoveAllListeners();
+            });
+        });
+    }
+
+    private void ApplyTwist(Twist twist)
+    {
+        hand.SetState(true);
+        
+        Debug.Log($"Applying twist {twist.Type} with letters {twist.FirstLetter} and {twist.SecondLetter}");
+        twistHolder.gameObject.SetActive(false);
+        twistTitle.Hide();
+
+        switch (twist.Type)
+        {
+            case TwistType.Replace:
+                break;
+            case TwistType.Destroy:
+                break;
+            case TwistType.AddCards:
+                StartCoroutine(GiveExtraCards());
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    private IEnumerator GiveExtraCards()
+    {
+        for (var i = 0; i < 3; i++)
+        {
+            hand.AddCard();
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     private IEnumerator Announce(WordMatch match, int multiplier)
@@ -116,7 +198,7 @@ public class Field : MonoBehaviour
         scoreDisplay.Add(score * multiplier);
     }
 
-    public static string Reverse(string s)
+    private static string Reverse(string s)
     {
         var charArray = s.ToCharArray();
         Array.Reverse(charArray);
@@ -145,9 +227,26 @@ public class Field : MonoBehaviour
             yield return null;
         }
     }
+
+    private static IEnumerable<Twist> GetTwists()
+    {
+        return new[]
+        {
+            new Twist(TwistType.Replace, "Immigrant blues", "Replace all [1] tiles with [2] tiles."),
+            new Twist(TwistType.Destroy, "Delay the inevitable", "Destroy all [1] tiles."),
+            new Twist(TwistType.AddCards, "Extra population", "Receive (3 extra) letter tiles.")
+        };
+    }
+
+    private void AddLettersTo(Twist twist)
+    {
+        var randomLetter = wordDictionary.GetRandomLetter();
+        var fieldLetter = grid.All().Where(c => c && c.Letter != randomLetter).OrderBy(_ => Random.value).First();
+        twist.SetLetters(fieldLetter.Letter, randomLetter);
+    }
 }
 
-struct WordMatch
+internal struct WordMatch
 {
     public string word;
     public IEnumerable<Card> cards;

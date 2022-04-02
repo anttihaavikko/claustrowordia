@@ -22,11 +22,17 @@ public class Hand : MonoBehaviour
         }
     }
 
+    public void SetState(bool canAct)
+    {
+        cards.ForEach(c => c.draggable.DropLocked = !canAct);
+    }
+
     public void AddCard()
     {
         var card = Instantiate(cardPrefab, Vector3.zero.WhereY(-5), Quaternion.identity);
         card.Setup(wordDictionary.GetRandomLetter());
         cards.Add(card);
+        card.draggable.DropLocked = cards.First().draggable.DropLocked;
         PositionCards();
 
         card.draggable.click += () =>
