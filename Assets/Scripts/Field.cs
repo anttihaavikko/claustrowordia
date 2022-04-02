@@ -5,6 +5,7 @@ using System.Linq;
 using AnttiStarterKit.Animations;
 using AnttiStarterKit.Managers;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Field : MonoBehaviour
@@ -17,13 +18,16 @@ public class Field : MonoBehaviour
     [SerializeField] private RectTransform twistHolder;
     [SerializeField] private TwistPanel twistPanelPrefab;
     [SerializeField] private Hand hand;
-
+    [SerializeField] private Appearer showBoardButton;
+    [SerializeField] private Transform twistHolderAndTitle;
+    
     public bool CanAct { get; private set; }
 
     private readonly TileGrid<Card> grid = new(7, 7);
     private readonly List<WordMatch> words = new();
 
     private int move;
+    private bool showingBoard;
 
     private void Start()
     {
@@ -31,6 +35,13 @@ public class Field : MonoBehaviour
         PlaceCard(new Vector3(1f, -1f, 0));
         PlaceCard(new Vector3(-1f, 1f, 0));
         PlaceCard(new Vector3(1f, 1f, 0));
+    }
+
+    public void ToggleBoardOrTwists()
+    {
+        showingBoard = !showingBoard;
+        twistHolderAndTitle.gameObject.SetActive(!showingBoard);
+        showBoardButton.text.text = showingBoard ? "SHOW TWISTS" : "SHOW BOARD";
     }
 
     private void PlaceCard(Vector3 pos)
@@ -136,6 +147,10 @@ public class Field : MonoBehaviour
                 twist.button.onClick.RemoveAllListeners();
             });
         });
+
+        yield return new WaitForSeconds(0.5f);
+
+        showBoardButton.Show();
     }
 
     private void ApplyTwist(Twist twist)
