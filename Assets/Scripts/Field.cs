@@ -38,6 +38,8 @@ public class Field : MonoBehaviour
         PlaceCard(new Vector3(1f, -1f, 0));
         PlaceCard(new Vector3(-1f, 1f, 0));
         PlaceCard(new Vector3(1f, 1f, 0));
+
+        move = 0;
     }
 
     public void ToggleBoardOrTwists()
@@ -315,7 +317,7 @@ public class Field : MonoBehaviour
         
         EffectManager.AddTextPopup(match.word.ToUpper(), pos);
         
-        EffectCamera.Effect(0.1f);
+        EffectCamera.Effect(0.15f);
         
         if (grid.All().All(c => !c || c.Matched || match.cards.Contains(c)))
         {

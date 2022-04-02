@@ -75,7 +75,7 @@ public class Card : MonoBehaviour
     public void Explode()
     {
         EffectManager.AddEffect(1, transform.position);
-        EffectCamera.Effect(0.2f);
+        EffectCamera.Effect(0.3f);
         gameObject.SetActive(false);
     }
 }
