@@ -6,17 +6,19 @@ using UnityEngine;
 
 public class WordDictionary : MonoBehaviour
 {
-    public TextAsset dictionaryFile;
+    public List<TextAsset> dictionaryFiles;
 
-	private Dictionary<string, string> words;
+    private Dictionary<string, string> words;
     private List<string> letterPool;
 
     private string next;
+    private TextAsset dictionaryFile;
 
     // Start is called before the first frame update
     void Awake()
     {
         letterPool = new List<string>();
+        dictionaryFile = dictionaryFiles[PlayerPrefs.GetInt("WordGridLanguage", 0)];
         Prep();
     }
 
