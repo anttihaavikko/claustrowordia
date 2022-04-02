@@ -37,6 +37,7 @@ public class Field : MonoBehaviour
     private bool showingBoard;
     private Card lastMoved;
     private bool undoing;
+    private int multiAddition = 1;
 
     private Tutorial<TutorialType> tutorial;
 
@@ -165,7 +166,7 @@ public class Field : MonoBehaviour
                 yield return new WaitForSeconds(0.075f);
             }
             
-            multi++;
+            multi += multiAddition;
 
             yield return new WaitForSeconds(0.5f);
         }
@@ -253,6 +254,9 @@ public class Field : MonoBehaviour
                 break;
             case TwistType.SlideDown:
                 StartCoroutine(SlideVertical(-1));
+                break;
+            case TwistType.MoreMulti:
+                multiAddition++;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -448,11 +452,12 @@ public class Field : MonoBehaviour
         {
             new Twist(TwistType.Replace, "Immigrant blues", "Replace all [1] tiles with [2] tiles."),
             new Twist(TwistType.Destroy, "Delay the inevitable", "Destroy all [1] tiles."),
-            new Twist(TwistType.AddCards, "Extra population", "Receive (3 extra) letter tiles."),
+            new Twist(TwistType.AddCards, "Extra housings", "Receive (3 extra) letter tiles."),
             new Twist(TwistType.SlideUp, "Southern refugees", "(Slide) the whole board (up) one tile."),
             new Twist(TwistType.SlideDown, "Northern refugees", "(Slide) the whole board (down) one tile."),
             new Twist(TwistType.SlideLeft, "Eastern refugees", "(Slide) the whole board (left) one tile."),
-            new Twist(TwistType.SlideRight, "Western refugees", "(Slide) the whole board (right) one tile.")
+            new Twist(TwistType.SlideRight, "Western refugees", "(Slide) the whole board (right) one tile."),
+            new Twist(TwistType.MoreMulti, "Population boom", "Gain (extra +1) on each (multiplier) increase.")
         };
     }
 

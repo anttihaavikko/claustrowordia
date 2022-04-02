@@ -29,5 +29,6 @@ public enum TwistType
     SlideUp,
     SlideRight,
     SlideLeft,
-    SlideDown
+    SlideDown,
+    MoreMulti
 }
