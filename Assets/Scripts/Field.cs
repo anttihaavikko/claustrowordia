@@ -21,14 +21,19 @@ public class Field : MonoBehaviour
     [SerializeField] private Hand hand;
     [SerializeField] private Appearer showBoardButton;
     [SerializeField] private Transform twistHolderAndTitle;
-    
+    [SerializeField] private Appearer undoButton;
+
     public bool CanAct { get; private set; }
+
+    public bool Undoing => undoing;
 
     private readonly TileGrid<Card> grid = new(7, 7);
     private readonly List<WordMatch> words = new();
 
     private int move;
     private bool showingBoard;
+    private Card lastMoved;
+    private bool undoing;
 
     private void Start()
     {
@@ -58,14 +63,20 @@ public class Field : MonoBehaviour
         AddCard(card);
     }
 
-    public void AddCard(Card card, bool check = true)
+    public void AddCard(Card card, bool check = true, bool fromHand = false)
     {
+        lastMoved = fromHand ? card : null;
         var p = card.draggable.GetRoundedPos();
         var x = Mathf.RoundToInt(p.x + 3);
         var y = Mathf.RoundToInt(-p.y + 3);
         grid.Set(card, x, y);
 
-        move++;
+        if (!undoing)
+        {
+            move++;   
+        }
+
+        undoButton.Hide();
 
         if (!check) return;
         StartCoroutine(Check(x, y));
@@ -114,8 +125,15 @@ public class Field : MonoBehaviour
 
             yield return new WaitForSeconds(0.5f);
         }
+        
+        if (multi == 1 && lastMoved)
+        {
+            undoButton.Show();
+        }
 
         yield return DoTwist();
+        
+        undoing = false;
     }
 
     private IEnumerator DoTwist()
@@ -125,6 +143,8 @@ public class Field : MonoBehaviour
             hand.SetState(true);
             yield break;
         }
+        
+        undoButton.Hide();
         
         foreach (Transform child in twistHolder)
         {
@@ -387,6 +407,26 @@ public class Field : MonoBehaviour
         var randomLetter = wordDictionary.GetRandomLetter();
         var fieldLetter = grid.All().Where(c => c && c.Letter != randomLetter).OrderBy(_ => Random.value).First();
         twist.SetLetters(fieldLetter.Letter, randomLetter);
+    }
+
+    public void Undo()
+    {
+        undoButton.Hide();
+
+        if (lastMoved)
+        {
+            var p = lastMoved.draggable.GetRoundedPos();
+            var x = Mathf.RoundToInt(p.x + 3);
+            var y = Mathf.RoundToInt(-p.y + 3);
+            lastMoved.draggable.CanDrag = true;
+            lastMoved.hoverer.enabled = true;
+            grid.Set(null, x, y);
+            lastMoved.transform.position = hand.transform.position + (hand.Size + 2) * 0.5f * Vector3.right;
+            hand.SetState(false);
+            lastMoved.draggable.enabled = true;
+            lastMoved = null;
+            undoing = true;
+        }
     }
 }
 

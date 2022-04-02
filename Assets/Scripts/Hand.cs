@@ -14,6 +14,8 @@ public class Hand : MonoBehaviour
 
     private List<Card> cards = new();
 
+    public int Size => cards.Count;
+
     private void Start()
     {
         for (var i = 0; i < 7; i++)
@@ -34,7 +36,11 @@ public class Hand : MonoBehaviour
         cards.Add(card);
         card.draggable.DropLocked = cards.First().draggable.DropLocked;
         PositionCards();
+        AddListeners(card);
+    }
 
+    private void AddListeners(Card card)
+    {
         card.draggable.click += () =>
         {
             cards.Remove(card);
@@ -48,10 +54,14 @@ public class Hand : MonoBehaviour
         card.draggable.dropped += _ =>
         {
             dropPreview.gameObject.SetActive(false);
-            field.AddCard(card);
-            AddCard();
-        };
+            field.AddCard(card, true, true);
 
+            if (!field.Undoing)
+            {
+                AddCard();   
+            }
+        };
+        
         card.draggable.preview += ShowPreview;
         card.draggable.hidePreview += () => dropPreview.gameObject.SetActive(false);
     }
