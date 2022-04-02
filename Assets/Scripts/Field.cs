@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AnttiStarterKit.Animations;
+using AnttiStarterKit.Extensions;
 using AnttiStarterKit.Managers;
+using AnttiStarterKit.Utils;
 using AnttiStarterKit.Visuals;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,6 +24,7 @@ public class Field : MonoBehaviour
     [SerializeField] private Appearer showBoardButton;
     [SerializeField] private Transform twistHolderAndTitle;
     [SerializeField] private Appearer undoButton;
+    [SerializeField] private SpeechBubble bubble;
 
     public bool CanAct { get; private set; }
 
@@ -35,8 +38,12 @@ public class Field : MonoBehaviour
     private Card lastMoved;
     private bool undoing;
 
+    private Tutorial<TutorialType> tutorial;
+
     private void Start()
     {
+        tutorial = new Tutorial<TutorialType>("WordGridTutorials");
+        
         EffectCamera.Effect(0.1f);
         
         PlaceCard(new Vector3(-1f, -1f, 0));
@@ -45,6 +52,43 @@ public class Field : MonoBehaviour
         PlaceCard(new Vector3(1f, 1f, 0));
 
         move = 0;
+
+        tutorial.onShow += ShowTutorial;
+
+        Invoke(nameof(ShowIntro), 1.5f);
+    }
+
+    
+
+    private void Update()
+    {
+        if (Application.isEditor && Input.GetKeyDown(KeyCode.D))
+        {
+            tutorial.Clear();
+        }
+    }
+
+    private void ShowIntro()
+    {
+        tutorial.Show(TutorialType.Intro);
+    }
+
+    private void ShowTutorial(TutorialType message)
+    {
+        bubble.Show(GetTutorialMessage(message));
+    }
+
+    private string GetTutorialMessage(TutorialType message)
+    {
+        return message switch
+        {
+            TutorialType.Intro => "Drag (letters) to the board and (create words) in any direction.",
+            TutorialType.Undo => "You can (undo) your last move if you (slip) but you must replay the (same letter) again afterwards.",
+            TutorialType.FullMatch => "When (every letter) on the board is part of a word, you get (ten times) the scores.",
+            TutorialType.Reverse => "As you can see, (words) can even be formed (backwards)!",
+            TutorialType.End => "The game (ends) when the (board is full). So try to find ways to (prolong) the game so you can score more.",
+            _ => throw new ArgumentOutOfRangeException(nameof(message), message, null)
+        };
     }
 
     public void ToggleBoardOrTwists()
@@ -104,8 +148,8 @@ public class Field : MonoBehaviour
 
         yield return CheckString(row, x, rowCards);
         yield return CheckString(col, y, colCards);
-        yield return CheckString(Reverse(row), 6 - x, rowsReversed);
-        yield return CheckString(Reverse(col), 6 - y, colsReversed);
+        yield return CheckString(Reverse(row), 6 - x, rowsReversed, true);
+        yield return CheckString(Reverse(col), 6 - y, colsReversed, true);
 
         var multi = 1;
 
@@ -213,6 +257,8 @@ public class Field : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException();
         }
+        
+        tutorial.Show(TutorialType.End);
     }
     
     private IEnumerator SlideVertical(int diff)
@@ -328,6 +374,11 @@ public class Field : MonoBehaviour
 
     private IEnumerator Announce(WordMatch match, int multiplier)
     {
+        if (match.reverse)
+        {
+            tutorial.Show(TutorialType.Reverse);    
+        }
+        
         var x = match.cards.Average(c => c.transform.position.x);
         var y = match.cards.Average(c => c.transform.position.y);
         const float diff = 0.3f;
@@ -346,6 +397,8 @@ public class Field : MonoBehaviour
             pos += Vector3.down * 0.5f + new Vector3(Random.Range(-diff, diff), 0, 0);
             EffectManager.AddTextPopup(extraText, pos);
             multiplier *= 10;
+            
+            tutorial.Show(TutorialType.FullMatch);
         }
         
         yield return new WaitForSeconds(0.05f);
@@ -365,7 +418,7 @@ public class Field : MonoBehaviour
         return new string(charArray);
     }
 
-    IEnumerator CheckString(string text, int mustInclude, List<Card> cards)
+    IEnumerator CheckString(string text, int mustInclude, List<Card> cards, bool isReversed = false)
     {
         if (text.Length < 3) yield break;
         
@@ -379,7 +432,8 @@ public class Field : MonoBehaviour
                     words.Add(new WordMatch
                     {
                         word = word,
-                        cards = cards.GetRange(start, len)
+                        cards = cards.GetRange(start, len),
+                        reverse = isReversed
                     });
                 }
             }
@@ -427,6 +481,8 @@ public class Field : MonoBehaviour
             lastMoved.draggable.enabled = true;
             lastMoved = null;
             undoing = true;
+            
+            tutorial.Show(TutorialType.Undo);
         }
     }
 }
@@ -435,4 +491,14 @@ internal struct WordMatch
 {
     public string word;
     public IEnumerable<Card> cards;
+    public bool reverse;
+}
+
+public enum TutorialType
+{
+    Intro,
+    Undo,
+    FullMatch,
+    Reverse,
+    End
 }
