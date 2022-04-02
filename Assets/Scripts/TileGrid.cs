@@ -56,6 +56,18 @@ public class TileGrid<T> {
 		return data.Cast<T>();
 	}
 
+	public void Remove(IReadOnlyList<T> list)
+	{
+		for (var iy = 0; iy < height; iy++) {
+			for (var ix = 0; ix < width; ix++) {
+				if (list.Contains(data[ix, iy]))
+				{
+					data[ix, iy] = default;
+				}
+			}
+		}
+	}
+
 	public T Get(int x, int y)
 	{
 		if (x < 0 || y < 0 || x >= width || y >= height) return default;

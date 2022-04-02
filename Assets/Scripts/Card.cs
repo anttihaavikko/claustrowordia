@@ -69,4 +69,9 @@ public class Card : MonoBehaviour
 
         wrapper.localPosition = Vector3.zero;
     }
+
+    public void Explode()
+    {
+        gameObject.SetActive(false);
+    }
 }

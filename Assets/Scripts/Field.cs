@@ -42,7 +42,7 @@ public class Field : MonoBehaviour
         AddCard(card);
     }
 
-    public void AddCard(Card card)
+    public void AddCard(Card card, bool check = true)
     {
         var p = card.draggable.GetRoundedPos();
         var x = Mathf.RoundToInt(p.x + 3);
@@ -51,6 +51,7 @@ public class Field : MonoBehaviour
 
         move++;
 
+        if (!check) return;
         StartCoroutine(Check(x, y));
     }
     
@@ -148,14 +149,47 @@ public class Field : MonoBehaviour
         switch (twist.Type)
         {
             case TwistType.Replace:
+                StartCoroutine(DestroyAll(twist.FirstLetter, twist.SecondLetter));
                 break;
             case TwistType.Destroy:
+                StartCoroutine(DestroyAll(twist.FirstLetter));
                 break;
             case TwistType.AddCards:
                 StartCoroutine(GiveExtraCards());
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    private IEnumerator DestroyAll(string letter, string replacement = null)
+    {
+        yield return new WaitForSeconds(0.5f);
+        
+        var cards = grid.All().Where(c => c && c.Letter == letter).ToList();
+        var positions = cards.Select(c => c.transform.position);
+        grid.Remove(cards);
+        foreach (var c in cards)
+        {
+            c.Explode();
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        if (replacement == null) yield break;
+        
+        yield return new WaitForSeconds(0.4f);
+
+        foreach (var p in positions)
+        {
+            var card = Instantiate(cardPrefab, p, Quaternion.identity);
+            card.Setup(replacement);
+            AddCard(card, false);
+            
+            var x = Mathf.RoundToInt(p.x + 3);
+            var y = Mathf.RoundToInt(-p.y + 3);
+
+            yield return Check(x, y);
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
