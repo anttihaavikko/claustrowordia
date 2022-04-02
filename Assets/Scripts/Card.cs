@@ -14,6 +14,7 @@ public class Card : MonoBehaviour
     [SerializeField] private Transform wrapper;
 
     public string Letter { get; private set; }
+    public bool Matched { get; private set; }
 
     private float shake;
 
@@ -29,6 +30,7 @@ public class Card : MonoBehaviour
 
     public void Colorize(Color color)
     {
+        Matched = true;
         sprite.color = color * shadowColor;
         shineSprite.color = color;
     }

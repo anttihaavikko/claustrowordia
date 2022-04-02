@@ -90,15 +90,16 @@ public class Field : MonoBehaviour
         var x = match.cards.Average(c => c.transform.position.x);
         var y = match.cards.Average(c => c.transform.position.y);
         const float diff = 0.3f;
+        var score = Mathf.Pow(match.word.Length, 2);
 
         var pos = new Vector3(x, y, 0) + Vector3.down;
         
         EffectManager.AddTextPopup(match.word.ToUpper(), pos);
-
-        if (Random.value < 0.5f)
+        
+        if (grid.All().All(c => !c || c.Matched || match.cards.Contains(c)))
         {
             yield return new WaitForSeconds(0.05f);
-            var extraText = "<size=5>FULL MATCH BONUS</size><size=4> x 10</size>";
+            const string extraText = "<size=5>FULL MATCH BONUS</size><size=4> x 10</size>";
             pos += Vector3.down * 0.5f + new Vector3(Random.Range(-diff, diff), 0, 0);
             EffectManager.AddTextPopup(extraText, pos);
         }
@@ -106,7 +107,7 @@ public class Field : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
         
         yield return new WaitForSeconds(0.05f);
-        var scoreText = $"<size=5>{match.word.Length}</size><size=4> x {multiplier}</size>";
+        var scoreText = $"<size=7>{score}</size><size=4> x {multiplier}</size>";
         pos += Vector3.down * 0.5f + new Vector3(Random.Range(-diff, diff), 0, 0);
         EffectManager.AddTextPopup(scoreText, pos);
     }
