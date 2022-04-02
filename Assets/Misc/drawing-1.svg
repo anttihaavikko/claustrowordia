@@ -26,9 +26,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="1741.9358"
-     inkscape:cy="900.11894"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="685.8833"
+     inkscape:cy="-841.20562"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -137,5 +137,285 @@
        sodipodi:nodetypes="ccccccccccccc"
        inkscape:export-xdpi="46.625683"
        inkscape:export-ydpi="46.625683" />
+    <path
+       style="fill:#ffffff;stroke:none;stroke-width:0.26458300000000001px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 910.85455,-181.74328 748.35466,198.84853 c 101.9188,24.23244 209.53934,24.23243 322.86164,0 z"
+       id="path927"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/tree.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 74.300928,-389.14443 -2.672696,186.01959"
+       id="path933"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="M 114.39136,-265.13136 V -74.300928"
+       id="path935"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 89.802561,-220.23009 1.603616,83.92263"
+       id="path937"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 167.84526,-349.58853 1.06908,160.89625"
+       id="path939"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 140.04923,-392.35165 3.74177,129.89298"
+       id="path941"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 149.67093,-207.93569 -0.53454,107.976888"
+       id="path943"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 66.282842,-134.1693 c 1.069078,8.01808 3.741774,71.62823 3.741774,71.62823"
+       id="path945"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 218.09193,-226.11002 -1.60362,163.034412"
+       id="path947"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 192.9686,-195.10675 c -0.53454,2.67269 1.60361,90.87164 1.60361,90.87164"
+       id="path949"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 207.93569,-385.9372 1.60362,125.61668"
+       id="path951"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 257.11328,-319.1198 -3.74177,142.72191"
+       id="path953"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 296.66917,-249.0952 c -2.67269,75.90455 1.06907,164.638031 1.06907,164.638031"
+       id="path955"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 258.18236,-136.30746 3.20723,63.07561"
+       id="path957"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 297.73824,-383.79905 0.53454,93.54434"
+       id="path959"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 315.37804,-316.44711 2.13815,106.37326"
+       id="path961"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path963"
+       cx="216.08365"
+       cy="-247.52187"
+       rx="6.544333"
+       ry="12.798653"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path965"
+       cx="276.86755"
+       cy="-174.05803"
+       rx="6.614583"
+       ry="16.441963"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path967"
+       cx="276.86755"
+       cy="-175.38094"
+       rx="2.0788691"
+       ry="6.4255953"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path969"
+       cx="216.58035"
+       cy="-248.33035"
+       rx="2.2678571"
+       ry="4.9136906"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path971"
+       cx="127.37797"
+       cy="-274.03271"
+       rx="9.8273811"
+       ry="19.276785"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path973"
+       cx="127.18899"
+       cy="-273.27679"
+       rx="3.96875"
+       ry="8.3154764"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path975"
+       cx="154.78558"
+       cy="-254.56291"
+       rx="4.6446786"
+       ry="11.59987"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path977"
+       cx="277.62354"
+       cy="-326.19345"
+       rx="10.016369"
+       ry="20.032738"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path979"
+       cx="277.43451"
+       cy="-326.19345"
+       rx="4.9136906"
+       ry="8.6934528"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path981"
+       cx="265.1503"
+       cy="-292.36459"
+       rx="3.96875"
+       ry="8.1264877"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path983"
+       cx="162.90775"
+       cy="-132.85863"
+       rx="6.8035712"
+       ry="16.819941"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path985"
+       cx="164.04167"
+       cy="-133.04762"
+       rx="1.8898809"
+       ry="5.6696429"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path987"
+       cx="76.540176"
+       cy="-140.22917"
+       rx="7.3705359"
+       ry="13.229166"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path989"
+       cx="76.729164"
+       cy="-141.93007"
+       rx="2.2678571"
+       ry="5.1026788"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path991"
+       cx="314.66519"
+       cy="-181.61757"
+       rx="5.4806542"
+       ry="13.79613"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path993"
+       cx="87.690468"
+       cy="-345.84821"
+       rx="6.0476193"
+       ry="11.339286"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.32291667;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4.5;stroke-dasharray:none"
+       d="m 88.068451,-322.79166 v 20.03274"
+       id="path995"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
   </g>
 </svg>

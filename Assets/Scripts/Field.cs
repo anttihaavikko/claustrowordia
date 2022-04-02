@@ -421,7 +421,8 @@ public class Field : MonoBehaviour
             lastMoved.draggable.CanDrag = true;
             lastMoved.hoverer.enabled = true;
             grid.Set(null, x, y);
-            lastMoved.transform.position = hand.transform.position + (hand.Size + 2) * 0.5f * Vector3.right;
+            var pos = hand.transform.position + (hand.Size + 2) * 0.5f * Vector3.right;
+            Tweener.MoveToBounceOut(lastMoved.transform, pos, 0.3f);
             hand.SetState(false);
             lastMoved.draggable.enabled = true;
             lastMoved = null;
