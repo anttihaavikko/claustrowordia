@@ -44,7 +44,7 @@ public class Field : MonoBehaviour
     {
         showingBoard = !showingBoard;
         twistHolderAndTitle.gameObject.SetActive(!showingBoard);
-        showBoardButton.text.text = showingBoard ? "SHOW TWISTS" : "SHOW BOARD";
+        showBoardButton.text.text = showingBoard ? "BACK TO TWISTS" : "SHOW BOARD";
     }
 
     private void PlaceCard(Vector3 pos)

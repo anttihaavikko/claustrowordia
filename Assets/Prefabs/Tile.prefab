@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 50dca894c71844737a34119ca2ac6be1, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9372549, g: 0.9019608, b: 0.8666667, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -164,7 +164,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a8c8b7f1ccbfa428c86b056fd6f06a7f, type: 3}
-  m_Color: {r: 0.8537736, g: 0.93355536, b: 1, a: 1}
+  m_Color: {r: 0.49411765, g: 0.7411765, b: 0.7607843, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -191,7 +191,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
+    oldSize: {x: 0.99, y: 0.99}
     newSize: {x: 0.74, y: 0.74}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -249,7 +249,7 @@ MonoBehaviour:
   letterField: {fileID: 7331334759160187418}
   sprite: {fileID: 1335574940527760971}
   shineSprite: {fileID: 7331334758208064160}
-  shadowColor: {r: 0.85490197, g: 0.93333334, b: 1, a: 1}
+  shadowColor: {r: 0.49411765, g: 0.7411765, b: 0.7607843, a: 1}
   wrapper: {fileID: 3286005829063595283}
 --- !u!114 &-6892530861210352568
 MonoBehaviour:
@@ -372,8 +372,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4280295203
+  m_fontColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -511,7 +511,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: a8c8b7f1ccbfa428c86b056fd6f06a7f, type: 3}
-  m_Color: {r: 0.85490197, g: 0.93333334, b: 1, a: 1}
+  m_Color: {r: 0.7005607, g: 0.8468781, b: 0.8584906, a: 0.9843137}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
