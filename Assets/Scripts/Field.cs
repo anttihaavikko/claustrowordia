@@ -11,6 +11,7 @@ public class Field : MonoBehaviour
     [SerializeField] private Card cardPrefab;
     [SerializeField] private WordDictionary wordDictionary;
     [SerializeField] private Color markColor;
+    [SerializeField] private Score scoreDisplay;
 
     private readonly TileGrid<Card> grid = new(7, 7);
     private readonly List<WordMatch> words = new();
@@ -90,7 +91,7 @@ public class Field : MonoBehaviour
         var x = match.cards.Average(c => c.transform.position.x);
         var y = match.cards.Average(c => c.transform.position.y);
         const float diff = 0.3f;
-        var score = Mathf.Pow(match.word.Length, 2);
+        var score = Mathf.RoundToInt(Mathf.Pow(match.word.Length, 2));
 
         var pos = new Vector3(x, y, 0) + Vector3.down;
         
@@ -99,9 +100,10 @@ public class Field : MonoBehaviour
         if (grid.All().All(c => !c || c.Matched || match.cards.Contains(c)))
         {
             yield return new WaitForSeconds(0.05f);
-            const string extraText = "<size=5>FULL MATCH BONUS</size><size=4> x 10</size>";
+            const string extraText = "<size=5>FULL MATCH BONUS</size>";
             pos += Vector3.down * 0.5f + new Vector3(Random.Range(-diff, diff), 0, 0);
             EffectManager.AddTextPopup(extraText, pos);
+            multiplier *= 10;
         }
         
         yield return new WaitForSeconds(0.05f);
@@ -110,6 +112,8 @@ public class Field : MonoBehaviour
         var scoreText = $"<size=7>{score}</size><size=4> x {multiplier}</size>";
         pos += Vector3.down * 0.5f + new Vector3(Random.Range(-diff, diff), 0, 0);
         EffectManager.AddTextPopup(scoreText, pos);
+
+        scoreDisplay.Add(score * multiplier);
     }
 
     public static string Reverse(string s)
