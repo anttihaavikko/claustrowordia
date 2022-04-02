@@ -29,7 +29,7 @@ namespace AnttiStarterKit.Animations
         private bool showing;
         private Queue<string> queue;
 
-        private void Start()
+        private void Awake()
         {
             queue = new Queue<string>();
             hex = ColorUtility.ToHtmlStringRGB(highlightColor);
