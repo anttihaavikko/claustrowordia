@@ -15,6 +15,8 @@ public class Hand : MonoBehaviour
     [SerializeField] private Transform dropPreview;
 
     private List<Card> cards = new();
+    private Card held;
+    private int prevIndex = -1;
 
     public int Size => cards.Count;
 
@@ -59,11 +61,13 @@ public class Hand : MonoBehaviour
         };
         card.draggable.dropCancelled += () =>
         {
+            held = null;
             cards.Add(card);
             PositionCards();
         };
         card.draggable.dropped += _ =>
         {
+            held = null;
             dropPreview.gameObject.SetActive(false);
             field.AddCard(card, true, true);
             AudioManager.Instance.PlayEffectFromCollection(2, card.transform.position, 0.3f);
@@ -73,6 +77,7 @@ public class Hand : MonoBehaviour
                 AddCard();   
             }
         };
+        card.draggable.picked += _ => held = card;
         
         card.draggable.preview += ShowPreview;
         card.draggable.hidePreview += () => dropPreview.gameObject.SetActive(false);
@@ -92,7 +97,7 @@ public class Hand : MonoBehaviour
         
         var basePos = position + (cards.Count - 1) * 0.5f * Vector3.left;
         var index = 0;
-        foreach (var c in cards)
+        foreach (var c in cards.OrderBy(c => c.transform.position.x))
         {
             if (!c.draggable.IsDragging)
             {
@@ -105,6 +110,18 @@ public class Hand : MonoBehaviour
 
     private void Update()
     {
+        if (held)
+        {
+            var ordered = cards.OrderBy(c => c.transform.position.x).ToList();
+            var index = ordered.IndexOf(held);
+
+            if (index != prevIndex)
+            {
+                prevIndex = index;
+                PositionCards();
+            }
+        }
+        
         if (Application.isEditor && Input.GetKeyDown(KeyCode.A))
         {
             AddCard();

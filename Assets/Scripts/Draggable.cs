@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 public class Draggable : MonoBehaviour
 {
     public Action hidePreview, click, dropCancelled;
-    public Action<Draggable> preview, dropped;
+    public Action<Draggable> preview, dropped, picked;
     
     [SerializeField] private LayerMask dropMask, blockMask;
     [SerializeField] private bool lockAfterDrop = true;
@@ -43,6 +43,7 @@ public class Draggable : MonoBehaviour
         layerId = go.layer;
         go.layer = 0;
         Cursor.visible = false;
+        picked?.Invoke(this);
         
         // AudioManager.Instance.PlayEffectAt(0, start, 1f);
 
