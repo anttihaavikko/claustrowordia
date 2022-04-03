@@ -20,13 +20,13 @@ namespace Wikipedia
         public string lang = "fi";
 
         private string ExtractURL =>
-            $"https://{lang}.wiktionary.org/w/api.php?action=query&prop=extracts&exsentences=1&exlimit=1&explaintext=1&formatversion=2&format=json&titles=";
+            $"https://{lang}.wiktionary.org/w/api.php?origin=*&action=query&prop=extracts&exsentences=1&exlimit=1&explaintext=1&formatversion=2&format=json&titles=";
 
         private string WikiTextURL =>
-            $"https://{lang}.wiktionary.org/w/api.php?action=parse&prop=wikitext&formatversion=2&format=json&page=";
+            $"https://{lang}.wiktionary.org/w/api.php?origin=*&action=parse&prop=wikitext&formatversion=2&format=json&page=";
 
         private string RandomURL =>
-            $"https://{lang}.wiktionary.org/w/api.php?action=query&generator=random&prop=info%7Ccategories&formatversion=2&grnnamespace=0&grnlimit=10&format=json";
+            $"https://{lang}.wiktionary.org/w/api.php?origin=*&action=query&generator=random&prop=info%7Ccategories&formatversion=2&grnnamespace=0&grnlimit=10&format=json";
 
         private WikiCertificateHandler certHandler;
 
