@@ -28,6 +28,7 @@ public class Field : MonoBehaviour
     [SerializeField] private SpeechBubble bubble;
     [SerializeField] private GameObject gameOverContainer;
     [SerializeField] private ScoreManager scoreManager;
+    [SerializeField] private Mascot mascot;
 
     public bool CanAct { get; private set; }
 
@@ -392,12 +393,28 @@ public class Field : MonoBehaviour
         }
     }
 
+    private void DoScoreAnims(int wordLength, int multiplier)
+    {
+        if (wordLength >= 6)
+        {
+            mascot.Jump();
+            return;
+        }
+
+        if (multiplier >= 4)
+        {
+            mascot.Duck();
+        }
+    }
+
     private IEnumerator Announce(WordMatch match, int multiplier)
     {
         if (match.reverse)
         {
             tutorial.Show(TutorialType.Reverse);    
         }
+
+        DoScoreAnims(match.word.Length, multiplier);
         
         var x = match.cards.Average(c => c.transform.position.x);
         var y = match.cards.Average(c => c.transform.position.y);
