@@ -42,6 +42,7 @@ public class Draggable : MonoBehaviour
         offset = start - GetMousePos();
         layerId = go.layer;
         go.layer = 0;
+        Cursor.visible = false;
         
         // AudioManager.Instance.PlayEffectAt(0, start, 1f);
 
@@ -89,6 +90,8 @@ public class Draggable : MonoBehaviour
 
     private void StopDrag()
     {
+        Cursor.visible = true;
+        
         var rounded = GetRoundedPos();
         DropOn(rounded);
         this.StartCoroutine(() =>

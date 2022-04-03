@@ -26,9 +26,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="-554.58403"
-     inkscape:cy="-275.5202"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="-824.69488"
+     inkscape:cy="388.38193"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -425,5 +425,21 @@
        inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/bubble.png"
        inkscape:export-xdpi="25"
        inkscape:export-ydpi="25" />
+    <path
+       style="fill:#ffffff;stroke:none;stroke-width:0.26458300000000001px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -452.05953,-175.38096 c -88.38882,34.38506 -190.31202,41.70134 -290.2857,52.91668 25.92938,27.768224 50.14625,58.961472 87.69048,63.499996 l -84.66667,101.297617 c 102.78715,-18.909997 205.39071,-37.9117882 276.67858,-72.571427 14.09906,-43.095307 20.59721,-89.991076 10.58331,-145.142866 z"
+       id="path1002"
+       sodipodi:nodetypes="cccccc"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/banner.png"
+       inkscape:export-xdpi="25.783333"
+       inkscape:export-ydpi="25.783333" />
+    <path
+       style="fill:#b3b3b3;stroke:none;stroke-width:0.26458300000000001px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m -256.06921,81.323719 53.67262,74.083331 3.02381,-30.2381 25.70238,-11.33928 z"
+       id="path1004-8" />
+    <path
+       style="fill:#ffffff;stroke:#000000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m -260.45246,62.193772 53.67262,74.083338 3.02381,-30.2381 25.70238,-11.339283 z"
+       id="path1004" />
   </g>
 </svg>
