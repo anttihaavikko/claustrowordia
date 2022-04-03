@@ -456,6 +456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bubble: {fileID: 2121398513039213122}
   mouth: {fileID: 2121398512434100793}
+  settingsView: {fileID: 0}
 --- !u!1 &2121398512210539594
 GameObject:
   m_ObjectHideFlags: 0
@@ -2148,10 +2149,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textArea: {fileID: 2121398513435875631}
   highlightColor: {r: 0.73333335, g: 0.26666668, b: 0.1882353, a: 1}
+  secondColor: {r: 0, g: 0, b: 1, a: 1}
   delayBetweenLetters: 0.02
   delayBetweenWords: 0.05
   staticPlacing: 1
-  toggleSound: {fileID: 0}
+  toggleSound: {fileID: 11400000, guid: 93babba6ed22148bead16744114929b0, type: 2}
 --- !u!1 &2121398513053575694
 GameObject:
   m_ObjectHideFlags: 0

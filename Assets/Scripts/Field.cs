@@ -20,7 +20,7 @@ public class Field : MonoBehaviour
     [SerializeField] private WordDictionary wordDictionary;
     [SerializeField] private Color markColor;
     [SerializeField] private Score scoreDisplay;
-    [SerializeField] private Appearer twistTitle;
+    [SerializeField] private Appearer twistTitle, twistBanner;
     [SerializeField] private RectTransform twistHolder;
     [SerializeField] private TwistPanel twistPanelPrefab;
     [SerializeField] private Hand hand;
@@ -284,6 +284,7 @@ public class Field : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
         
         twistTitle.Show();
+        twistBanner.Show();
 
         yield return new WaitForSeconds(1f);
         
@@ -314,6 +315,7 @@ public class Field : MonoBehaviour
         // Debug.Log($"Applying twist {twist.Type} with letters {twist.FirstLetter} and {twist.SecondLetter}");
         twistHolder.gameObject.SetActive(false);
         twistTitle.Hide();
+        twistBanner.Hide();
 
         switch (twist.Type)
         {
@@ -602,12 +604,13 @@ public class Field : MonoBehaviour
             lastMoved.hoverer.enabled = true;
             grid.Set(null, x, y);
             var pos = hand.transform.position + (hand.Size + 2) * 0.5f * Vector3.right;
+            AudioManager.Instance.PlayEffectFromCollection(2, lastMoved.transform.position, 1f);
             Tweener.MoveToBounceOut(lastMoved.transform, pos, 0.3f);
             hand.SetState(false);
             lastMoved.draggable.enabled = true;
             lastMoved = null;
             undoing = true;
-            
+
             tutorial.Show(TutorialType.Undo);
         }
     }
