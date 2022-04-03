@@ -2,6 +2,7 @@ using System;
 using AnttiStarterKit.Animations;
 using UnityEngine;
 using AnttiStarterKit.Extensions;
+using AnttiStarterKit.Managers;
 
 public class Mascot : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class Mascot : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         bubble.onVocal += OpenMouth;
+        bubble.onWord += () => AudioManager.Instance.PlayEffectFromCollection(0, mouth.position);
     }
 
     private void OpenMouth()

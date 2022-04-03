@@ -74,8 +74,10 @@ public class Card : MonoBehaviour
 
     public void Explode()
     {
-        EffectManager.AddEffect(1, transform.position);
+        var p = transform.position;
+        EffectManager.AddEffect(1, p);
         EffectCamera.Effect(0.3f);
         gameObject.SetActive(false);
+        AudioManager.Instance.PlayEffectFromCollection(1, p);
     }
 }

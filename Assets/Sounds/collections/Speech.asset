@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0ed6741a13249ff91a11647becccdea, type: 3}
+  m_Name: Speech
+  m_EditorClassIdentifier: 
+  volume: 1
+  clips:
+  - {fileID: 8300000, guid: 05a127688ef0943e2a10f49bc9485a7f, type: 3}
+  - {fileID: 8300000, guid: a8c2635373a0448158e2cb6033fceee8, type: 3}
+  - {fileID: 8300000, guid: 448f1a679edf2489a83c6f1c5985e116, type: 3}
+  - {fileID: 8300000, guid: 032891d42e082417e831ca77db0c7af0, type: 3}
+  - {fileID: 8300000, guid: 722bcb7bcc34540cc84ebea1da61cd02, type: 3}
+  - {fileID: 8300000, guid: 4d79e247f85ae4e088b81d37e47e0083, type: 3}
+  - {fileID: 8300000, guid: 1df2cb1ddc8f84cb1b839c884d976ed8, type: 3}
+  - {fileID: 8300000, guid: 554edab15d86f4fdc8d69945b38f8278, type: 3}
+  - {fileID: 8300000, guid: d2f72238e8e8c45c69f1f60793e862cf, type: 3}
+  - {fileID: 8300000, guid: 886532af47ec6466ebf315f117afceaf, type: 3}
+  - {fileID: 8300000, guid: 27e766c61a1d74f1994d49f028f0a098, type: 3}
+  - {fileID: 8300000, guid: 64a0337d875ba425193c6648b0a2f2b6, type: 3}
