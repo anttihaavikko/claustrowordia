@@ -7,6 +7,7 @@ using AnttiStarterKit.Extensions;
 using AnttiStarterKit.Managers;
 using AnttiStarterKit.Utils;
 using AnttiStarterKit.Visuals;
+using Leaderboards;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -25,6 +26,8 @@ public class Field : MonoBehaviour
     [SerializeField] private Transform twistHolderAndTitle;
     [SerializeField] private Appearer undoButton;
     [SerializeField] private SpeechBubble bubble;
+    [SerializeField] private GameObject gameOverContainer;
+    [SerializeField] private ScoreManager scoreManager;
 
     public bool CanAct { get; private set; }
 
@@ -58,8 +61,6 @@ public class Field : MonoBehaviour
 
         Invoke(nameof(ShowIntro), 1.5f);
     }
-
-    
 
     private void Update()
     {
@@ -179,6 +180,21 @@ public class Field : MonoBehaviour
         yield return DoTwist();
         
         undoing = false;
+
+        if (grid.All().Count(c => c) >= 49)
+        {
+            GameOver();
+        }
+    }
+
+    private void GameOver()
+    {
+        var score = scoreDisplay.TotalScore;
+        var lang = PlayerPrefs.GetInt("WordGridLanguage", 0) + 11;
+        var plr = PlayerPrefs.GetString("PlayerName", "Anonymous");
+        var id = PlayerPrefs.GetString("PlayerId", Guid.NewGuid().ToString());
+        scoreManager.SubmitScore(plr, (long)score, lang, id);
+        gameOverContainer.SetActive(true);
     }
 
     private IEnumerator DoTwist()

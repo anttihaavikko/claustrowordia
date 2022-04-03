@@ -17,6 +17,8 @@ public class Score : MonoBehaviour
     private float shownScore;
     private int shownAddition;
 
+    public ulong TotalScore => score;
+
     private void Update()
     {
         var scrollSpeed = Mathf.Abs(score - shownScore);

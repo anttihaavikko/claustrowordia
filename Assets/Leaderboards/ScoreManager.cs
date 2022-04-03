@@ -52,8 +52,8 @@ namespace Leaderboards
 			StopAllCoroutines ();
 		}
 
-		public void LoadLeaderBoards(int p) {
-			StartCoroutine(DoLoadLeaderBoards(p));
+		public void LoadLeaderBoards(int p, int lang) {
+			StartCoroutine(DoLoadLeaderBoards(p, lang));
 		}
 
 		public LeaderBoardData GetData()
@@ -61,8 +61,8 @@ namespace Leaderboards
 			return data;
 		}
 
-		private IEnumerator DoLoadLeaderBoards(int p) {
-			var www = UnityWebRequest.Get(LoadURL + "?amt=" + perPage + "&p=" + p + "&game=" + gameName);
+		private IEnumerator DoLoadLeaderBoards(int p, int lang) {
+			var www = UnityWebRequest.Get(LoadURL + "?nomax=1&limit=" + lang + "&amt=" + perPage + "&p=" + p + "&game=" + gameName);
 			www.certificateHandler = certHandler;
 
 			yield return www.SendWebRequest();

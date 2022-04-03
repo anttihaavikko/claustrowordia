@@ -27,8 +27,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.49497475"
-     inkscape:cx="685.8833"
-     inkscape:cy="-841.20562"
+     inkscape:cx="-554.58403"
+     inkscape:cy="-275.5202"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -37,7 +37,7 @@
      inkscape:window-height="964"
      inkscape:window-x="0"
      inkscape:window-y="25"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -415,6 +415,14 @@
        d="m 88.068451,-322.79166 v 20.03274"
        id="path995"
        inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/grain.png"
+       inkscape:export-xdpi="25"
+       inkscape:export-ydpi="25" />
+    <path
+       id="rect997"
+       style="fill:#faf6f1;fill-opacity:1;stroke:#231f20;stroke-width:75.59055213;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.5;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       d="M -1329.7676 -1010.1523 C -1351.9276 -1010.1523 -1369.7676 -992.31234 -1369.7676 -970.15234 L -1369.7676 -452.14258 C -1369.7676 -429.98258 -1351.9276 -412.14258 -1329.7676 -412.14258 L -790.45703 -412.14258 L -751.55273 -272.74023 L -702.92383 -412.14258 L -165.25977 -412.14258 C -143.09977 -412.14258 -125.25977 -429.98258 -125.25977 -452.14258 L -125.25977 -970.15234 C -125.25977 -992.31234 -143.09977 -1010.1523 -165.25977 -1010.1523 L -1329.7676 -1010.1523 z "
+       transform="scale(0.26458333)"
+       inkscape:export-filename="/Users/anttih/dev/WordGrid/Assets/Sprites/bubble.png"
        inkscape:export-xdpi="25"
        inkscape:export-ydpi="25" />
   </g>
