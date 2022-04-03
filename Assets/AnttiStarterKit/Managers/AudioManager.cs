@@ -15,6 +15,7 @@ namespace AnttiStarterKit.Managers
 
 		private AudioLowPassFilter lowpass;
 		private AudioHighPassFilter highpass;
+		private AudioChorusFilter chorus;
 
 		public float TargetPitch { get; set; } = 1f;
 
@@ -61,20 +62,23 @@ namespace AnttiStarterKit.Managers
 				ChangeMusic (0, 0.5f, 2f, 1f);
 			}
 		}
+		
+		public void Chorus(bool state = true)
+		{
+			if (!chorus) chorus = curMusic.GetComponent<AudioChorusFilter>();
+			chorus.enabled = state;
+		}
 
 		public void Lowpass(bool state = true)
 		{
-			if (!lowpass) lowpass = Camera.main.GetComponent<AudioLowPassFilter>();
-
-			doingLowpass = state;
-			doingHighpass = false;
+			if (!lowpass) lowpass = curMusic.GetComponent<AudioLowPassFilter>();
+			lowpass.enabled = state;
 		}
 
 		public void Highpass(bool state = true)
 		{
-			if (!highpass) highpass = Camera.main.GetComponent<AudioHighPassFilter>();
-			doingHighpass = state;
-			doingLowpass = false;
+			if (!highpass) highpass = curMusic.GetComponent<AudioHighPassFilter>();
+			highpass.enabled = state;
 		}
 
 		public void ChangeMusic(int next, float fadeOutDur = 1f, float fadeInDur = 0.5f, float startDelay = 0.5f)

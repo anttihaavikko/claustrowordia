@@ -1,5 +1,6 @@
 using System;
 using AnttiStarterKit.Animations;
+using AnttiStarterKit.Managers;
 using UnityEngine;
 
 public class StartView : MonoBehaviour
@@ -8,6 +9,10 @@ public class StartView : MonoBehaviour
     
     private void Start()
     {
+        AudioManager.Instance.Lowpass(false);
+        AudioManager.Instance.Chorus(false);
+        AudioManager.Instance.TargetPitch = 1f;
+        
         Invoke(nameof(Greet), 1.5f);
     }
 

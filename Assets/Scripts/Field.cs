@@ -5,6 +5,7 @@ using System.Linq;
 using AnttiStarterKit.Animations;
 using AnttiStarterKit.Extensions;
 using AnttiStarterKit.Managers;
+using AnttiStarterKit.ScriptableObjects;
 using AnttiStarterKit.Utils;
 using AnttiStarterKit.Visuals;
 using Leaderboards;
@@ -32,6 +33,7 @@ public class Field : MonoBehaviour
     [SerializeField] private Mascot mascot;
     [SerializeField] private WordDefiner wordDefiner;
     [SerializeField] private Wikier wikier;
+    [SerializeField] private SoundCollection notes;
 
     public bool CanAct { get; private set; }
 
@@ -50,6 +52,10 @@ public class Field : MonoBehaviour
 
     private void Start()
     {
+        AudioManager.Instance.Lowpass(false);
+        AudioManager.Instance.Chorus(false);
+        AudioManager.Instance.TargetPitch = 1f;
+        
         tutorial = new Tutorial<TutorialType>("WordGridTutorials");
         
         EffectCamera.Effect(0.1f);
@@ -76,7 +82,7 @@ public class Field : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(article.excerpt))
         {
-            bubble.Show($"({article.title}), {article.excerpt.ToLower()}");   
+            bubble.Show($"({article.title}), {article.excerpt.ToLower()}", true);   
         }
     }
 
@@ -129,6 +135,11 @@ public class Field : MonoBehaviour
 
     public void AddCard(Card card, bool check = true, bool fromHand = false)
     {
+        if (fromHand)
+        {
+            AudioManager.Instance.PlayEffectFromCollection(1, card.transform.position, 0.7f);
+        }
+        
         lastMoved = fromHand ? card : null;
         var p = card.draggable.GetRoundedPos();
         var x = Mathf.RoundToInt(p.x + 3);
@@ -176,10 +187,17 @@ public class Field : MonoBehaviour
         foreach (var w in words.OrderBy(w => w.word.Length))
         {
             StartCoroutine(Announce(w, multi));
+
+            var i = 0;
             
             foreach (var c in w.cards.ToList())
             {
-                EffectManager.Instance.AddEffect(0, c.transform.position);
+                var p = c.transform.position;
+                var sound = notes.At(i);
+                i++;
+                AudioManager.Instance.PlayEffectAt(sound, p, 0.3f, false);
+                AudioManager.Instance.PlayEffectFromCollection(1, p, 0.5f);
+                EffectManager.Instance.AddEffect(0, p);
                 c.Colorize(markColor);
                 c.Shake(0.1f);
                 yield return new WaitForSeconds(0.075f);
@@ -227,12 +245,17 @@ public class Field : MonoBehaviour
 
     private void GameOver()
     {
+        AudioManager.Instance.PlayEffectAt(0, Vector3.zero, 1f, false);
         var score = scoreDisplay.TotalScore;
         var lang = PlayerPrefs.GetInt("WordGridLanguage", 0) + 11;
         var plr = PlayerPrefs.GetString("PlayerName", "Anonymous");
         var id = PlayerPrefs.GetString("PlayerId", Guid.NewGuid().ToString());
         scoreManager.SubmitScore(plr, (long)score, lang, id);
         gameOverContainer.SetActive(true);
+        
+        AudioManager.Instance.Lowpass();
+        AudioManager.Instance.Chorus();
+        AudioManager.Instance.TargetPitch = 0.8f;
     }
 
     private IEnumerator DoTwist()
@@ -254,6 +277,10 @@ public class Field : MonoBehaviour
         
         move = 0;
         
+        AudioManager.Instance.PlayEffectAt(1, Vector3.zero, 1f, false);
+        AudioManager.Instance.Lowpass();
+        AudioManager.Instance.Chorus();
+
         yield return new WaitForSeconds(0.25f);
         
         twistTitle.Show();
@@ -320,6 +347,9 @@ public class Field : MonoBehaviour
         
         tutorial.Show(TutorialType.End);
         bubble.CanHide = true;
+        
+        AudioManager.Instance.Lowpass(false);
+        AudioManager.Instance.Chorus(false);
     }
     
     private IEnumerator SlideVertical(int diff)
@@ -346,7 +376,9 @@ public class Field : MonoBehaviour
                 if (card)
                 {
                     var t = card.transform;
-                    Tweener.MoveToBounceOut(t, t.position + Vector3.up * diff, 0.3f);
+                    var p = t.position;
+                    Tweener.MoveToBounceOut(t, p + Vector3.up * diff, 0.3f);
+                    RandomSlideSound(p);
                 }
             }
         }
@@ -377,12 +409,22 @@ public class Field : MonoBehaviour
                 if (card)
                 {
                     var t = card.transform;
-                    Tweener.MoveToBounceOut(t, t.position + Vector3.right * diff, 0.3f);
+                    var p = t.position;
+                    Tweener.MoveToBounceOut(t, p + Vector3.right * diff, 0.3f);
+                    RandomSlideSound(p);
                 }
             }
         }
 
         hand.SetState(true);
+    }
+
+    private static void RandomSlideSound(Vector3 position)
+    {
+        if (Random.value < 0.1f)
+        {
+            AudioManager.Instance.PlayEffectFromCollection(2, position, 0.7f);
+        }
     }
 
     private IEnumerator DestroyAll(string letter, string replacement = null)
@@ -418,6 +460,8 @@ public class Field : MonoBehaviour
             
             var x = Mathf.RoundToInt(p.x + 3);
             var y = Mathf.RoundToInt(-p.y + 3);
+            
+            AudioManager.Instance.PlayEffectFromCollection(1, p, 0.8f);
 
             yield return Check(x, y);
             yield return new WaitForSeconds(0.1f);
@@ -463,6 +507,8 @@ public class Field : MonoBehaviour
 
         var pos = new Vector3(x, y, 0) + Vector3.down;
         
+        AudioManager.Instance.PlayEffectFromCollection(2, pos, 2f);
+        
         EffectManager.AddTextPopup(match.word.ToUpper(), pos);
         
         EffectCamera.Effect(0.15f);
@@ -473,6 +519,7 @@ public class Field : MonoBehaviour
             const string extraText = "<size=5>FULL MATCH BONUS</size>";
             pos += Vector3.down * 0.5f + new Vector3(Random.Range(-diff, diff), 0, 0);
             EffectManager.AddTextPopup(extraText, pos);
+            AudioManager.Instance.PlayEffectFromCollection(2, pos, 1.5f);
             multiplier *= 10;
             
             tutorial.Show(TutorialType.FullMatch);
@@ -484,6 +531,7 @@ public class Field : MonoBehaviour
         var scoreText = $"<size=7>{score}</size><size=4> x {multiplier}</size>";
         pos += Vector3.down * 0.5f + new Vector3(Random.Range(-diff, diff), 0, 0);
         EffectManager.AddTextPopup(scoreText, pos);
+        AudioManager.Instance.PlayEffectFromCollection(2, pos, 1f);
 
         scoreDisplay.Add(score * multiplier);
     }

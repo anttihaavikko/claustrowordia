@@ -54,6 +54,7 @@ MonoBehaviour:
   soundCollections:
   - {fileID: 11400000, guid: 3ff9366eb3b39493089c4bcaa272d291, type: 2}
   - {fileID: 11400000, guid: 4136d3514f8894a7ab6e037c229fdaa7, type: 2}
+  - {fileID: 11400000, guid: 93babba6ed22148bead16744114929b0, type: 2}
 --- !u!1 &7018987235980102786
 GameObject:
   m_ObjectHideFlags: 0

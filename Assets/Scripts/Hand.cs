@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using AnttiStarterKit.Animations;
 using AnttiStarterKit.Extensions;
+using AnttiStarterKit.Managers;
 using UnityEngine;
 
 public class Hand : MonoBehaviour
@@ -18,9 +20,17 @@ public class Hand : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(DealCards());
+    }
+
+    private IEnumerator DealCards()
+    {
+        yield return new WaitForSeconds(0.5f);
+        
         for (var i = 0; i < 7; i++)
         {
             AddCard();
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
@@ -31,6 +41,7 @@ public class Hand : MonoBehaviour
 
     public void AddCard()
     {
+        AudioManager.Instance.PlayEffectFromCollection(2, transform.position, 0.6f);
         var card = Instantiate(cardPrefab, Vector3.zero.WhereY(-5), Quaternion.identity);
         card.Setup(wordDictionary.GetRandomLetter());
         cards.Add(card);
@@ -55,6 +66,7 @@ public class Hand : MonoBehaviour
         {
             dropPreview.gameObject.SetActive(false);
             field.AddCard(card, true, true);
+            AudioManager.Instance.PlayEffectFromCollection(2, card.transform.position, 0.3f);
 
             if (!field.Undoing)
             {
@@ -75,7 +87,10 @@ public class Hand : MonoBehaviour
 
     private void PositionCards()
     {
-        var basePos = transform.position + (cards.Count - 1) * 0.5f * Vector3.left;
+        var position = transform.position;
+        AudioManager.Instance.PlayEffectFromCollection(2, position, 0.3f);
+        
+        var basePos = position + (cards.Count - 1) * 0.5f * Vector3.left;
         var index = 0;
         foreach (var c in cards)
         {
