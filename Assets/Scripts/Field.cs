@@ -246,16 +246,21 @@ public class Field : MonoBehaviour
     private void GameOver()
     {
         AudioManager.Instance.PlayEffectAt(0, Vector3.zero, 1f, false);
-        var score = scoreDisplay.TotalScore;
-        var lang = PlayerPrefs.GetInt("WordGridLanguage", 0) + 11;
-        var plr = PlayerPrefs.GetString("PlayerName", "Anonymous");
-        var id = PlayerPrefs.GetString("PlayerId", Guid.NewGuid().ToString());
-        scoreManager.SubmitScore(plr, (long)score, lang, id);
+        Invoke(nameof(SubmitScore), 0.5f);
         gameOverContainer.SetActive(true);
         
         AudioManager.Instance.Lowpass();
         AudioManager.Instance.Chorus();
         AudioManager.Instance.TargetPitch = 0.8f;
+    }
+
+    private void SubmitScore()
+    {
+        var score = scoreDisplay.TotalScore;
+        var lang = PlayerPrefs.GetInt("WordGridLanguage", 0) + 11;
+        var plr = PlayerPrefs.GetString("PlayerName", "Anonymous");
+        var id = PlayerPrefs.GetString("PlayerId", Guid.NewGuid().ToString());
+        scoreManager.SubmitScore(plr, (long)score, lang, id);
     }
 
     private IEnumerator DoTwist()
