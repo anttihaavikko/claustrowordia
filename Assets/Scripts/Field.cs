@@ -29,6 +29,7 @@ public class Field : MonoBehaviour
     [SerializeField] private GameObject gameOverContainer;
     [SerializeField] private ScoreManager scoreManager;
     [SerializeField] private Mascot mascot;
+    [SerializeField] private WordDefiner wordDefiner;
 
     public bool CanAct { get; private set; }
 
@@ -178,6 +179,8 @@ public class Field : MonoBehaviour
             undoButton.Show();
         }
 
+        ShowWordDefinition();
+
         yield return DoTwist();
         
         undoing = false;
@@ -185,6 +188,14 @@ public class Field : MonoBehaviour
         if (grid.All().Count(c => c) >= 49)
         {
             GameOver();
+        }
+    }
+
+    private void ShowWordDefinition()
+    {
+        if (words.Any())
+        {
+            wordDefiner.DefineWord(words.Random().word);
         }
     }
 
@@ -205,6 +216,8 @@ public class Field : MonoBehaviour
             hand.SetState(true);
             yield break;
         }
+
+        bubble.CanHide = false;
         
         undoButton.Hide();
         
@@ -280,6 +293,7 @@ public class Field : MonoBehaviour
         }
         
         tutorial.Show(TutorialType.End);
+        bubble.CanHide = true;
     }
     
     private IEnumerator SlideVertical(int diff)

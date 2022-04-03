@@ -521,6 +521,7 @@ MonoBehaviour:
   gameOverContainer: {fileID: 844856986}
   scoreManager: {fileID: 2107171827}
   mascot: {fileID: 36380731}
+  wordDefiner: {fileID: 260335666}
 --- !u!1001 &252153419
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -578,6 +579,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77394a5e8ec5a4271b7255617910ad8c, type: 3}
+--- !u!1 &260335665
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 260335667}
+  - component: {fileID: 260335666}
+  m_Layer: 0
+  m_Name: Word Definer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &260335666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260335665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbdf0e90550c048378abcc86d1da1128, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bubble: {fileID: 188646365}
+--- !u!4 &260335667
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260335665}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &385527925 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3068418655741241860, guid: 77394a5e8ec5a4271b7255617910ad8c, type: 3}
@@ -5870,6 +5916,18 @@ PrefabInstance:
     - target: {fileID: 2121398513032188297, guid: 2ed4ca8a9a52a4a38bd9554ba67351e3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 58.526
+      objectReference: {fileID: 0}
+    - target: {fileID: 2121398513039213122, guid: 2ed4ca8a9a52a4a38bd9554ba67351e3, type: 3}
+      propertyPath: secondColor.b
+      value: 0.6156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 2121398513039213122, guid: 2ed4ca8a9a52a4a38bd9554ba67351e3, type: 3}
+      propertyPath: secondColor.g
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2121398513039213122, guid: 2ed4ca8a9a52a4a38bd9554ba67351e3, type: 3}
+      propertyPath: secondColor.r
+      value: 0.34509805
       objectReference: {fileID: 0}
     - target: {fileID: 2121398513053575691, guid: 2ed4ca8a9a52a4a38bd9554ba67351e3, type: 3}
       propertyPath: m_Positions.Array.data[0].x

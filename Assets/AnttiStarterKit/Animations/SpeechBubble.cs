@@ -15,13 +15,16 @@ namespace AnttiStarterKit.Animations
         
         [SerializeField] private TMP_Text textArea;
         [SerializeField] private Color highlightColor = Color.red;
+        [SerializeField] private Color secondColor = Color.blue;
         [SerializeField] private float delayBetweenLetters = 0.02f;
         [SerializeField] private float delayBetweenWords = 0.05f;
         [SerializeField] private bool staticPlacing = true;
         [SerializeField] private SoundCollection toggleSound;
 
+        public bool CanHide { get; set; } = true;
+
         private Appearer appearer;
-        private string hex;
+        private string hex, secondaryHex;
         private IEnumerator showHandle;
         private string message;
         private readonly string[] vocals = {"a", "e", "i", "o", "u", "y"};
@@ -33,6 +36,7 @@ namespace AnttiStarterKit.Animations
         {
             queue = new Queue<string>();
             hex = ColorUtility.ToHtmlStringRGB(highlightColor);
+            secondaryHex = ColorUtility.ToHtmlStringRGB(secondColor);
             appearer = GetComponent<Appearer>();
         }
 
@@ -85,6 +89,8 @@ namespace AnttiStarterKit.Animations
 
         private void SkipOrHide()
         {
+            if (!CanHide) return;
+            
             if (done)
             {
                 HideOrShowNext();
@@ -126,19 +132,32 @@ namespace AnttiStarterKit.Animations
 
             var openCount = msg.Split('(').Length - 1;
             var closeCount = msg.Split(')').Length - 1;
+            
+            var secondOpenCount = msg.Split('[').Length - 1;
+            var secondCloseCount = msg.Split(']').Length - 1;
 
             if (openCount > closeCount) {
                 msg += ")";
             }
+            
+            if (secondOpenCount > secondCloseCount) {
+                msg += "]";
+            }
 
-            var rest = message.Substring(pos).Replace("(", "").Replace(")", "");
+            var rest = message.Substring(pos)
+                .Replace("(", "")
+                .Replace(")", "")
+                .Replace("[", "")
+                .Replace("]", "");
             return staticPlacing ? $"{msg}<color=#00000000>{rest}</color>" : msg;
         }
 
         private string ApplyColors(string text)
         {
             return text.Replace("(", "<color=#" + hex + ">")
-                .Replace(")", "</color>");
+                .Replace(")", "</color>")
+                .Replace("[", "<color=#" + secondaryHex + ">")
+                .Replace("]", "</color>");
         }
 
         private IEnumerator RevealText()

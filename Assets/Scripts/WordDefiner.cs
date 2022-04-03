@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using AnttiStarterKit.Animations;
 using AnttiStarterKit.Extensions;
 using Leaderboards;
@@ -11,8 +12,7 @@ using Random = UnityEngine.Random;
 
 public class WordDefiner : MonoBehaviour
 {
-    public TMP_Text field;
-    public Appearer appearer;
+    public SpeechBubble bubble;
     
     private CertificateHandler certHandler;
 
@@ -54,7 +54,7 @@ public class WordDefiner : MonoBehaviour
 
         if (!string.IsNullOrEmpty(www.error))
         {
-            appearer.Hide();
+            // bubble.Hide();
             yield break;
         }
 
@@ -63,32 +63,37 @@ public class WordDefiner : MonoBehaviour
 
         if (def.words.Length == 0)
         {
-            appearer.Hide();
+            // appearer.Hide();
             yield break;
         }
         var w = def.words[Random.Range(0, def.words.Length)];
         if (w.meanings.Length == 0)
         {
-            appearer.Hide();
+            // appearer.Hide();
             yield break;
         }
         var meaning = w.meanings[Random.Range(0, w.meanings.Length)];
         if (meaning.definitions.Length == 0)
         {
-            appearer.Hide();
+            // appearer.Hide();
             yield break;
         }
         
-        var str = w.word + ", " + meaning.partOfSpeech + ", " + meaning.definitions[Random.Range(0, meaning.definitions.Length)].definition;
+        var str = "<m>" + w.word + "</m>, " + meaning.partOfSpeech + ", " + meaning.definitions[Random.Range(0, meaning.definitions.Length)].definition;
+        var sb = new StringBuilder(str);
+        sb.Replace("(", "[");
+        sb.Replace(")", "]");
+        sb.Replace("<m>", "(");
+        sb.Replace("</m>", ")");
+        str = sb.ToString();
         ShowDefinition(str);
         
-        cache.Add(word, field.text);
+        cache.Add(word, str);
     }
 
     private void ShowDefinition(string def)
     {
-        field.text = def;
-        appearer.Show();
+        bubble.Show(def);
     }
 }
 
