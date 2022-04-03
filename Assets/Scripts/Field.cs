@@ -196,15 +196,16 @@ public class Field : MonoBehaviour
         }
 
         ShowWordDefinition();
+        
+        if (grid.All().Count(c => c) >= 49)
+        {
+            GameOver();
+            yield break;
+        }
 
         yield return DoTwist();
         
         undoing = false;
-
-        if (grid.All().Count(c => c) >= 49)
-        {
-            GameOver();
-        }
     }
 
     private void ShowWordDefinition()
