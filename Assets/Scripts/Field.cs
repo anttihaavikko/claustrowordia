@@ -246,7 +246,7 @@ public class Field : MonoBehaviour
     private void GameOver()
     {
         AudioManager.Instance.PlayEffectAt(0, Vector3.zero, 1f, false);
-        Invoke(nameof(SubmitScore), 0.5f);
+        Invoke(nameof(SubmitScore), 1.5f);
         gameOverContainer.SetActive(true);
         
         AudioManager.Instance.Lowpass();

@@ -44,7 +44,7 @@ public class Hand : MonoBehaviour
     public void AddCard()
     {
         AudioManager.Instance.PlayEffectFromCollection(2, transform.position, 0.6f);
-        var card = Instantiate(cardPrefab, Vector3.zero.WhereY(-5), Quaternion.identity);
+        var card = Instantiate(cardPrefab, Vector3.zero.WhereY(-5).WhereX(5), Quaternion.identity);
         card.Setup(wordDictionary.GetRandomLetter());
         cards.Add(card);
         card.draggable.DropLocked = cards.First().draggable.DropLocked;
