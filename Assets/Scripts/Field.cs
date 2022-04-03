@@ -10,6 +10,7 @@ using AnttiStarterKit.Visuals;
 using Leaderboards;
 using UnityEngine;
 using UnityEngine.UI;
+using Wikipedia;
 using Random = UnityEngine.Random;
 
 public class Field : MonoBehaviour
@@ -30,6 +31,7 @@ public class Field : MonoBehaviour
     [SerializeField] private ScoreManager scoreManager;
     [SerializeField] private Mascot mascot;
     [SerializeField] private WordDefiner wordDefiner;
+    [SerializeField] private Wikier wikier;
 
     public bool CanAct { get; private set; }
 
@@ -62,6 +64,20 @@ public class Field : MonoBehaviour
         tutorial.onShow += ShowTutorial;
 
         Invoke(nameof(ShowIntro), 1.5f);
+        
+        var langIndex = PlayerPrefs.GetInt("WordGridLanguage", 0);
+        var languages = new[] { "en", "fi", "fr", "de", "es", "nl" };
+        wikier.lang = languages[langIndex];
+        
+        wikier.onLoaded += ShowWiki;
+    }
+
+    private void ShowWiki(WikiArticle article)
+    {
+        if (!string.IsNullOrEmpty(article.excerpt))
+        {
+            bubble.Show($"({article.title}), {article.excerpt.ToLower()}");   
+        }
     }
 
     private void Update()
@@ -195,7 +211,16 @@ public class Field : MonoBehaviour
     {
         if (words.Any())
         {
-            wordDefiner.DefineWord(words.Random().word);
+            var word = words.Random().word;
+            var langIndex = PlayerPrefs.GetInt("WordGridLanguage", 0);
+
+            if (langIndex == 0)
+            {
+                wordDefiner.DefineWord(word);
+                return;
+            }
+            
+            wikier.Load(word);
         }
     }
 

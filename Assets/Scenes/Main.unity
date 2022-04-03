@@ -522,6 +522,7 @@ MonoBehaviour:
   scoreManager: {fileID: 2107171827}
   mascot: {fileID: 36380731}
   wordDefiner: {fileID: 260335666}
+  wikier: {fileID: 260335668}
 --- !u!1001 &252153419
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -589,6 +590,7 @@ GameObject:
   m_Component:
   - component: {fileID: 260335667}
   - component: {fileID: 260335666}
+  - component: {fileID: 260335668}
   m_Layer: 0
   m_Name: Word Definer
   m_TagString: Untagged
@@ -624,6 +626,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &260335668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260335665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d3b93f1981db42c7a8b0613eea1431a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &385527925 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3068418655741241860, guid: 77394a5e8ec5a4271b7255617910ad8c, type: 3}
