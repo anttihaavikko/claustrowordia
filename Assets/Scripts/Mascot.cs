@@ -3,11 +3,13 @@ using AnttiStarterKit.Animations;
 using UnityEngine;
 using AnttiStarterKit.Extensions;
 using AnttiStarterKit.Managers;
+using AnttiStarterKit.SettingsView;
 
 public class Mascot : MonoBehaviour
 {
     [SerializeField] private SpeechBubble bubble;
     [SerializeField] private Transform mouth;
+    [SerializeField] private SettingsView settingsView;
 
     private Animator anim;
     
@@ -19,6 +21,11 @@ public class Mascot : MonoBehaviour
         anim = GetComponent<Animator>();
         bubble.onVocal += OpenMouth;
         bubble.onWord += () => AudioManager.Instance.PlayEffectFromCollection(0, mouth.position);
+
+        if (settingsView)
+        {
+            settingsView.onMute += () => bubble.Show("Yes, (completely) understandable!");
+        }
     }
 
     private void OpenMouth()

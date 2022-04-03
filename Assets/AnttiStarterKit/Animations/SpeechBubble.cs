@@ -181,7 +181,7 @@ namespace AnttiStarterKit.Animations
 
         private void CheckForWord(int pos, string current)
         {
-            if (pos == 0 || current == " ")
+            if (pos == 1 || current == " ")
             {
                 onWord?.Invoke();
             }

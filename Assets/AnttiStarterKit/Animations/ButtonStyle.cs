@@ -28,7 +28,8 @@ namespace AnttiStarterKit.Animations
 
         [SerializeField] private int clickSound = -1, hoverSound = -1;
         [SerializeField] private float clickVolume = 1f, hoverVolume = 1f;
-        
+
+        public Action onHover;
 
         private Vector3 originalScale;
         private Color originalBackColor, originalFrontColor;
@@ -52,6 +53,7 @@ namespace AnttiStarterKit.Animations
             ApplyRotation(Random.Range(-rotationAmount, rotationAmount), TweenEasings.BounceEaseOut);
             ApplyColors(backColors.Random(), frontColors.Random());
             DoSound(hoverSound, hoverVolume);
+            onHover?.Invoke();
         }
     
         private void ApplyScaling(float amount, Func<float, float> easing)

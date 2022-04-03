@@ -2,11 +2,14 @@ using System;
 using AnttiStarterKit.Animations;
 using AnttiStarterKit.Managers;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StartView : MonoBehaviour
 {
     [SerializeField] private SpeechBubble bubble;
-    
+    [SerializeField] private ButtonStyle quitButton;
+    [SerializeField] private Mascot mascot;
+
     private void Start()
     {
         AudioManager.Instance.Lowpass(false);
@@ -14,6 +17,12 @@ public class StartView : MonoBehaviour
         AudioManager.Instance.TargetPitch = 1f;
         
         Invoke(nameof(Greet), 1.5f);
+
+        quitButton.onHover += () =>
+        {
+            mascot.Duck();
+            bubble.Show("Bye...");
+        };
     }
 
     private void Greet()
