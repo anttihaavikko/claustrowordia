@@ -132,6 +132,7 @@ namespace Wikipedia
             preCleaned = Regex.Replace(preCleaned, @"\[[\d]\]", "");
             preCleaned = Regex.Replace(preCleaned, @"\|.*\|", "");
             preCleaned = Regex.Replace(preCleaned, @"\{\{.*\}\}", "");
+            preCleaned = Regex.Replace(preCleaned, @"<!.*>", "");
             // preCleaned = Regex.Replace(preCleaned, @"\(.*\)", "");
             preCleaned = Regex.Replace(preCleaned, @"<ref.*>.*<\/ref>", "");
             preCleaned = Regex.Replace(preCleaned, @"<ref.*>", "");
