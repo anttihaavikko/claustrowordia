@@ -148,6 +148,7 @@ namespace Wikipedia
             sb.Replace(";", "");
             sb.Replace("\"", "");
             sb.Replace("'", "");
+            sb.Replace("|", "");
             
             sb.Replace("(", "[");
             sb.Replace(")", "]");
