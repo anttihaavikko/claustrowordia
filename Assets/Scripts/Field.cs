@@ -82,7 +82,7 @@ public class Field : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(article.excerpt))
         {
-            bubble.Show($"({article.title}), {article.excerpt.ToLower()}", true);   
+            bubble.Show($"({article.title}), {article.excerpt.ToLower()}");   
         }
     }
 
