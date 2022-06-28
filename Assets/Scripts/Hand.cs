@@ -63,6 +63,11 @@ public class Hand : MonoBehaviour
         {
             held = null;
             cards.Add(card);
+            if (field.Undoing)
+            {
+                field.ShowUndoArrow();
+                return;
+            }
             PositionCards();
         };
         card.draggable.dropped += _ =>
@@ -77,7 +82,11 @@ public class Hand : MonoBehaviour
                 AddCard();   
             }
         };
-        card.draggable.picked += _ => held = card;
+        card.draggable.picked += _ =>
+        {
+            held = card;
+            field.HideUndoArrow();
+        };
         
         card.draggable.preview += ShowPreview;
         card.draggable.hidePreview += () => dropPreview.gameObject.SetActive(false);

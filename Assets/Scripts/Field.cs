@@ -26,7 +26,7 @@ public class Field : MonoBehaviour
     [SerializeField] private Hand hand;
     [SerializeField] private Appearer showBoardButton;
     [SerializeField] private Transform twistHolderAndTitle;
-    [SerializeField] private Appearer undoButton;
+    [SerializeField] private Appearer undoButton, undoArrow;
     [SerializeField] private SpeechBubble bubble;
     [SerializeField] private GameObject gameOverContainer;
     [SerializeField] private ScoreManager scoreManager;
@@ -274,7 +274,7 @@ public class Field : MonoBehaviour
         bubble.CanHide = false;
         
         undoButton.Hide();
-        
+
         foreach (Transform child in twistHolder)
         {
             Destroy(child.gameObject);
@@ -599,6 +599,7 @@ public class Field : MonoBehaviour
     public void Undo()
     {
         undoButton.Hide();
+        undoArrow.Show();
 
         if (lastMoved)
         {
@@ -607,9 +608,11 @@ public class Field : MonoBehaviour
             var y = Mathf.RoundToInt(-p.y + 3);
             lastMoved.draggable.CanDrag = true;
             lastMoved.hoverer.enabled = true;
-            grid.Set(null, x, y);
+            var position = lastMoved.transform.position;
             var pos = hand.transform.position + (hand.Size + 2) * 0.5f * Vector3.right;
-            AudioManager.Instance.PlayEffectFromCollection(2, lastMoved.transform.position, 1f);
+            undoArrow.transform.position = pos;
+            grid.Set(null, x, y);
+            AudioManager.Instance.PlayEffectFromCollection(2, position, 1f);
             Tweener.MoveToBounceOut(lastMoved.transform, pos, 0.3f);
             hand.SetState(false);
             lastMoved.draggable.enabled = true;
@@ -618,6 +621,16 @@ public class Field : MonoBehaviour
 
             tutorial.Show(TutorialType.Undo);
         }
+    }
+
+    public void HideUndoArrow()
+    {
+        undoArrow.Hide();
+    }
+
+    public void ShowUndoArrow()
+    {
+        undoArrow.Show();
     }
 }
 

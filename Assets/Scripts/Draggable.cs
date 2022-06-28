@@ -34,7 +34,7 @@ public class Draggable : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!CanDrag || !enabled) return;
+        if (!CanDrag || !enabled || DropLocked) return;
 
         var go = gameObject;
         dragging = true;
@@ -60,6 +60,8 @@ public class Draggable : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (DropLocked) return;
+        
         click?.Invoke();
     }
 
