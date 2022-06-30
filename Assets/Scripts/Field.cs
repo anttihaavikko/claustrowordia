@@ -43,8 +43,7 @@ public class Field : MonoBehaviour
 
     private readonly TileGrid<Card> grid = new(7, 7);
     private readonly List<WordMatch> words = new();
-
-    private int move;
+    
     private bool showingBoard;
     private Card lastMoved;
     private bool undoing;
@@ -71,8 +70,6 @@ public class Field : MonoBehaviour
         // PlaceCard(new Vector3(1f, -1f, 0));
         // PlaceCard(new Vector3(-1f, 1f, 0));
         // PlaceCard(new Vector3(1f, 1f, 0));
-
-        move = 0;
 
         tutorial.onShow += ShowTutorial;
 
@@ -164,11 +161,6 @@ public class Field : MonoBehaviour
             arcade.PlaceLetter(card.Letter, x, y);   
         }
 
-        if (!undoing)
-        {
-            move++;   
-        }
-
         undoButton.Hide();
 
         if (!check) return;
@@ -232,15 +224,7 @@ public class Field : MonoBehaviour
         }
 
         ShowWordDefinition();
-        
-        if (arcade.IsGameOver)
-        {
-            GameOver();
-            yield break;
-        }
 
-        yield return DoTwist();
-        
         undoing = false;
     }
 
@@ -261,7 +245,7 @@ public class Field : MonoBehaviour
         }
     }
 
-    private void GameOver()
+    public void GameOver()
     {
         AudioManager.Instance.PlayEffectAt(0, Vector3.zero, 1f, false);
         Invoke(nameof(SubmitScore), 1.5f);
@@ -281,14 +265,13 @@ public class Field : MonoBehaviour
         scoreManager.SubmitScore(plr, (long)score, lang, id);
     }
 
-    private IEnumerator DoTwist()
+    public void ShowTwists(List<Twist> twists)
     {
-        if (move == 0 || move % 10 != 0)
-        {
-            hand.SetState(true);
-            yield break;
-        }
+        StartCoroutine(DoTwist(twists));
+    }
 
+    private IEnumerator DoTwist(List<Twist> twists)
+    {
         bubble.CanHide = false;
         
         undoButton.Hide();
@@ -297,9 +280,7 @@ public class Field : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        
-        move = 0;
-        
+
         AudioManager.Instance.PlayEffectAt(1, Vector3.zero, 1f, false);
         AudioManager.Instance.Lowpass();
         AudioManager.Instance.Chorus();
@@ -313,7 +294,7 @@ public class Field : MonoBehaviour
         
         twistHolder.gameObject.SetActive(true);
         
-        GetTwists().OrderBy(_ => Random.value).Take(3).ToList().ForEach(t =>
+        twists.ForEach(t =>
         {
             AddLettersTo(t);
             var twist = Instantiate(twistPanelPrefab, twistHolder);
@@ -330,7 +311,7 @@ public class Field : MonoBehaviour
         showBoardButton.Show();
     }
 
-    private void ApplyTwist(Twist twist)
+    public void ApplyTwist(Twist twist)
     {
         showBoardButton.Hide();
         hand.SetState(true);
@@ -593,21 +574,6 @@ public class Field : MonoBehaviour
 
             yield return null;
         }
-    }
-
-    private static IEnumerable<Twist> GetTwists()
-    {
-        return new[]
-        {
-            new Twist(TwistType.Replace, "Immigrant blues", "Replace all [1] tiles with [2] tiles."),
-            new Twist(TwistType.Destroy, "Delay the inevitable", "Destroy all [1] tiles."),
-            new Twist(TwistType.AddCards, "Extra housings", "Receive (3 extra) letter tiles."),
-            new Twist(TwistType.SlideUp, "Southern refugees", "(Slide) the whole board (up) one tile."),
-            new Twist(TwistType.SlideDown, "Northern refugees", "(Slide) the whole board (down) one tile."),
-            new Twist(TwistType.SlideLeft, "Eastern refugees", "(Slide) the whole board (left) one tile."),
-            new Twist(TwistType.SlideRight, "Western refugees", "(Slide) the whole board (right) one tile."),
-            new Twist(TwistType.MoreMulti, "Population boom", "Gain (extra +1) on each (multiplier) increase.")
-        };
     }
 
     private void AddLettersTo(Twist twist)

@@ -21,8 +21,10 @@ public class Arcade : NetworkBehaviour
     private readonly List<LetterMatch> words = new();
     private int score;
     private int multiAddition = 1;
+    private List<Twist> twists;
+    private int move;
 
-    public bool IsGameOver => grid.All().Count(c => !string.IsNullOrEmpty(c)) >= 49;
+    private bool IsGameOver => grid.All().Count(c => !string.IsNullOrEmpty(c)) >= 49;
     
     private void Awake()
     {
@@ -78,6 +80,45 @@ public class Arcade : NetworkBehaviour
             multi += multiAddition;
             yield return new WaitForSeconds(0.5f);
         }
+
+        var field = Hand.Instance.Field;
+
+        if (IsGameOver)
+        {
+            field.GameOver();
+            yield break;
+        }
+
+        if (move == 0 || move % 10 != 0)
+        {
+            Hand.Instance.SetState(true);
+            yield break;
+        }
+
+        twists = GetTwists().OrderBy(_ => Random.value).Take(3).ToList();
+        field.ShowTwists(twists);
+    }
+
+    [Command]
+    public void PickTwist(int index)
+    {
+        var twist = twists[index];
+        Hand.Instance.Field.ApplyTwist(twist);
+    }
+    
+    private static IEnumerable<Twist> GetTwists()
+    {
+        return new[]
+        {
+            new Twist(TwistType.Replace, "Immigrant blues", "Replace all [1] tiles with [2] tiles."),
+            new Twist(TwistType.Destroy, "Delay the inevitable", "Destroy all [1] tiles."),
+            new Twist(TwistType.AddCards, "Extra housings", "Receive (3 extra) letter tiles."),
+            new Twist(TwistType.SlideUp, "Southern refugees", "(Slide) the whole board (up) one tile."),
+            new Twist(TwistType.SlideDown, "Northern refugees", "(Slide) the whole board (down) one tile."),
+            new Twist(TwistType.SlideLeft, "Eastern refugees", "(Slide) the whole board (left) one tile."),
+            new Twist(TwistType.SlideRight, "Western refugees", "(Slide) the whole board (right) one tile."),
+            new Twist(TwistType.MoreMulti, "Population boom", "Gain (extra +1) on each (multiplier) increase.")
+        };
     }
     
     IEnumerator CheckString(string text, int mustInclude, List<string> letters, bool isReversed = false)
@@ -150,6 +191,7 @@ public class Arcade : NetworkBehaviour
     {
         grid.Set(letter, x, y);
         StartCoroutine(Check(x, y));
+        move++;
     }
     
     [Command]
@@ -157,6 +199,7 @@ public class Arcade : NetworkBehaviour
     {
         grid.Set(null, x, y);
         StartCoroutine(Check(x, y));
+        move--;
     }
     
     [Command]
