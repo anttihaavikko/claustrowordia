@@ -129,6 +129,8 @@ public class Hand : MonoBehaviour
 
     private void PositionCards()
     {
+        if (field.Undoing) return;
+        
         var position = transform.position;
         AudioManager.Instance.PlayEffectFromCollection(2, position, 0.3f);
         
