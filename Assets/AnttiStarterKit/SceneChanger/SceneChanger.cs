@@ -74,6 +74,12 @@ public class SceneChanger : MonoBehaviour
             Tweener.Instance.ScaleTo(spinner, Vector3.one, 0.2f, 0f, TweenEasings.BounceEaseOut);
         }
 
+        if (Application.platform == RuntimePlatform.OSXServer || Application.platform == RuntimePlatform.LinuxServer)
+        {
+            SceneManager.LoadSceneAsync("Server");
+            return;
+        }
+
         sceneToLoad = sceneName;
         CancelInvoke("DoChangeScene");
         Invoke("DoChangeScene", blinders.GetDuration());

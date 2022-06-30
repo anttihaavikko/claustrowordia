@@ -13,6 +13,7 @@
     "com.unity.toolchain.macos-x86_64-linux-x86_64": "1.0.0",
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.7.6",
+    "io.ultimatearcade.unitysdk": "https://github.com/UltimateTournament/ArcadeUnitySDK.git",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",

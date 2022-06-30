@@ -128,4 +128,18 @@ public class TileGrid<T> {
 	{
 		return Enumerable.Range(0, height).Select(y => data[x, y]);
 	}
+
+	public Vector2Int? GetPosition(T obj)
+	{
+		for (var iy = 0; iy < height; iy++) {
+			for (var ix = 0; ix < width; ix++) {
+				if (Compare(obj, data[ix, iy]))
+				{
+					return new Vector2Int(ix, iy);
+				}
+			}
+		}
+
+		return null;
+	}
 }

@@ -34,7 +34,7 @@ public class Draggable : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (!CanDrag || !enabled || DropLocked) return;
+        if (!CanDrag || !enabled) return;
 
         var go = gameObject;
         dragging = true;
@@ -60,8 +60,7 @@ public class Draggable : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (DropLocked) return;
-        
+        if (DropLocked || !CanDrag || !enabled) return;
         click?.Invoke();
     }
 
@@ -112,9 +111,11 @@ public class Draggable : MonoBehaviour
     private void DropOn(Vector2 pos)
     {
         dragging = false;
-
+        
         if (CanDrop(pos))
         {
+            dragging = false;
+            
             transform.position = pos;
             dropped?.Invoke(this);
             enabled = !lockAfterDrop;
@@ -122,12 +123,14 @@ public class Draggable : MonoBehaviour
             
             return;
         }
-        
+
         Tweener.MoveToBounceOut(transform, start, 0.3f);
+        
         this.StartCoroutine(() =>
         {
             gameObject.layer = layerId;
         }, 0.3f);
+        
         dropCancelled?.Invoke();
     }
 

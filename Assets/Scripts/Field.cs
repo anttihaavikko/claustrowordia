@@ -34,6 +34,8 @@ public class Field : MonoBehaviour
     [SerializeField] private WordDefiner wordDefiner;
     [SerializeField] private Wikier wikier;
     [SerializeField] private SoundCollection notes;
+    
+    private Arcade arcade;
 
     public bool CanAct { get; private set; }
 
@@ -50,6 +52,11 @@ public class Field : MonoBehaviour
 
     private Tutorial<TutorialType> tutorial;
 
+    private void Awake()
+    {
+        wordDictionary.Setup();
+    }
+
     private void Start()
     {
         AudioManager.Instance.Lowpass(false);
@@ -60,10 +67,10 @@ public class Field : MonoBehaviour
         
         EffectCamera.Effect(0.1f);
         
-        PlaceCard(new Vector3(-1f, -1f, 0));
-        PlaceCard(new Vector3(1f, -1f, 0));
-        PlaceCard(new Vector3(-1f, 1f, 0));
-        PlaceCard(new Vector3(1f, 1f, 0));
+        // PlaceCard(new Vector3(-1f, -1f, 0));
+        // PlaceCard(new Vector3(1f, -1f, 0));
+        // PlaceCard(new Vector3(-1f, 1f, 0));
+        // PlaceCard(new Vector3(1f, 1f, 0));
 
         move = 0;
 
@@ -76,6 +83,11 @@ public class Field : MonoBehaviour
         wikier.lang = languages[langIndex];
         
         wikier.onLoaded += ShowWiki;
+    }
+
+    public void Setup(Arcade a)
+    {
+        arcade = a;
     }
 
     private void ShowWiki(WikiArticle article)
@@ -128,6 +140,7 @@ public class Field : MonoBehaviour
     {
         var card = Instantiate(cardPrefab, pos, Quaternion.identity);
         card.Setup(wordDictionary.GetRandomLetter());
+        Debug.Log("Lock placed card");
         card.draggable.DropLocked = true;
         card.hoverer.enabled = false;
         AddCard(card);
@@ -145,6 +158,11 @@ public class Field : MonoBehaviour
         var x = Mathf.RoundToInt(p.x + 3);
         var y = Mathf.RoundToInt(-p.y + 3);
         grid.Set(card, x, y);
+
+        if (arcade && arcade.isActiveAndEnabled)
+        {
+            arcade.PlaceLetter(card.Letter, x, y);   
+        }
 
         if (!undoing)
         {
@@ -215,7 +233,7 @@ public class Field : MonoBehaviour
 
         ShowWordDefinition();
         
-        if (grid.All().Count(c => c) >= 49)
+        if (arcade.IsGameOver)
         {
             GameOver();
             yield break;
@@ -325,27 +343,34 @@ public class Field : MonoBehaviour
         switch (twist.Type)
         {
             case TwistType.Replace:
+                arcade.DestroyAll(twist.FirstLetter, twist.SecondLetter);
                 StartCoroutine(DestroyAll(twist.FirstLetter, twist.SecondLetter));
                 break;
             case TwistType.Destroy:
+                arcade.DestroyAll(twist.FirstLetter, null);
                 StartCoroutine(DestroyAll(twist.FirstLetter));
                 break;
             case TwistType.AddCards:
-                StartCoroutine(GiveExtraCards());
+                arcade.AddCards(3);
                 break;
             case TwistType.SlideUp:
+                arcade.SlideVertical(1);
                 StartCoroutine(SlideVertical(1));
                 break;
             case TwistType.SlideRight:
+                arcade.SlideHorizontal(1);
                 StartCoroutine(SlideHorizontal(1));
                 break;
             case TwistType.SlideLeft:
+                arcade.SlideHorizontal(-1);
                 StartCoroutine(SlideHorizontal(-1));
                 break;
             case TwistType.SlideDown:
+                arcade.SlideVertical(-1);
                 StartCoroutine(SlideVertical(-1));
                 break;
             case TwistType.MoreMulti:
+                arcade.MoreMulti();
                 multiAddition++;
                 break;
             default:
@@ -475,15 +500,6 @@ public class Field : MonoBehaviour
         }
     }
 
-    private IEnumerator GiveExtraCards()
-    {
-        for (var i = 0; i < 3; i++)
-        {
-            hand.AddCard();
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-
     private void DoScoreAnims(int wordLength, int multiplier)
     {
         if (wordLength >= 6)
@@ -498,6 +514,11 @@ public class Field : MonoBehaviour
         }
     }
 
+    public static int GetScore(string word)
+    {
+        return Mathf.RoundToInt(Mathf.Pow(word.Length, 2));
+    }
+
     private IEnumerator Announce(WordMatch match, int multiplier)
     {
         if (match.reverse)
@@ -510,7 +531,7 @@ public class Field : MonoBehaviour
         var x = match.cards.Average(c => c.transform.position.x);
         var y = match.cards.Average(c => c.transform.position.y);
         const float diff = 0.3f;
-        var score = Mathf.RoundToInt(Mathf.Pow(match.word.Length, 2));
+        var score = GetScore(match.word);
 
         var pos = new Vector3(x, y, 0) + Vector3.down;
         
@@ -540,10 +561,10 @@ public class Field : MonoBehaviour
         EffectManager.AddTextPopup(scoreText, pos);
         AudioManager.Instance.PlayEffectFromCollection(2, pos, 1f);
 
-        scoreDisplay.Add(score * multiplier);
+        // scoreDisplay.Add(score * multiplier);
     }
 
-    private static string Reverse(string s)
+    public static string Reverse(string s)
     {
         var charArray = s.ToCharArray();
         Array.Reverse(charArray);
@@ -606,15 +627,16 @@ public class Field : MonoBehaviour
             var p = lastMoved.draggable.GetRoundedPos();
             var x = Mathf.RoundToInt(p.x + 3);
             var y = Mathf.RoundToInt(-p.y + 3);
+            hand.SetPickState(false);
             lastMoved.draggable.CanDrag = true;
             lastMoved.hoverer.enabled = true;
             var position = lastMoved.transform.position;
             var pos = hand.transform.position + (hand.Size + 2) * 0.5f * Vector3.right;
             undoArrow.transform.position = pos;
             grid.Set(null, x, y);
+            arcade.RemoveLetter(x, y);
             AudioManager.Instance.PlayEffectFromCollection(2, position, 1f);
             Tweener.MoveToBounceOut(lastMoved.transform, pos, 0.3f);
-            hand.SetState(false);
             lastMoved.draggable.enabled = true;
             lastMoved = null;
             undoing = true;
@@ -632,12 +654,24 @@ public class Field : MonoBehaviour
     {
         undoArrow.Show();
     }
+
+    public void AddScore(int amount)
+    {
+        scoreDisplay.Add(amount);
+    }
 }
 
 internal struct WordMatch
 {
     public string word;
     public IEnumerable<Card> cards;
+    public bool reverse;
+}
+
+internal struct LetterMatch
+{
+    public string word;
+    public IEnumerable<string> letters;
     public bool reverse;
 }
 

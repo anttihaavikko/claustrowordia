@@ -163,6 +163,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "2.0.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.render-pipelines.core": {
       "version": "12.1.5",
       "depth": 1,
@@ -285,6 +292,15 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "io.ultimatearcade.unitysdk": {
+      "version": "https://github.com/UltimateTournament/ArcadeUnitySDK.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "2.0.0"
+      },
+      "hash": "3eff71afca38526ec8d8e2e3a0dfaacf2ba81a11"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

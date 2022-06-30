@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class WordDictionary : MonoBehaviour
+[CreateAssetMenu(fileName = "New Dictionary", menuName = "Dictionary", order = 0)]
+public class WordDictionary : ScriptableObject
 {
     public List<TextAsset> dictionaryFiles;
 
@@ -15,33 +16,25 @@ public class WordDictionary : MonoBehaviour
     private TextAsset dictionaryFile;
 
     // Start is called before the first frame update
-    void Awake()
+    public void Setup()
     {
         letterPool = new List<string>();
         dictionaryFile = dictionaryFiles[PlayerPrefs.GetInt("WordGridLanguage", 0)];
         Prep();
     }
 
-    void Prep()
+    private void Prep()
     {
         words = dictionaryFile.text.Split('\n').Select(w => {
             var word = w.Trim().ToLower();
             return word.Split('\t')[0];
         }).Distinct().ToDictionary(x => x, x => x);
 
-        Debug.Log("Loaded dictionary of " + words.Count + " words.");
-
-        var sample = RandomWord();
-        Debug.Log("Random word sample: '" + sample + "'");
+        // Debug.Log("Loaded dictionary of " + words.Count + " words.");
+        //
+        // var sample = RandomWord();
+        // Debug.Log("Random word sample: '" + sample + "'");
     }
-
-    // void CheckTracks()
-    // {
-    //     foreach (var track in tracks.Where(t => t.NeedsCheck()))
-    //     {
-    //         track.Check();
-    //     }
-    // }
 
     public bool IsWord(string word)
     {

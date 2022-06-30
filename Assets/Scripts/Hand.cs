@@ -13,6 +13,8 @@ public class Hand : MonoBehaviour
     [SerializeField] private WordDictionary wordDictionary;
     [SerializeField] private Field field;
     [SerializeField] private Transform dropPreview;
+    
+    private Arcade arcade;
 
     private List<Card> cards = new();
     private Card held;
@@ -20,34 +22,55 @@ public class Hand : MonoBehaviour
 
     public int Size => cards.Count;
 
-    private void Start()
-    {
-        StartCoroutine(DealCards());
+    public Field Field => field;
+    
+    private static Hand instance = null;
+    public static Hand Instance {
+        get { return instance; }
     }
 
-    private IEnumerator DealCards()
+    private void Awake()
     {
-        yield return new WaitForSeconds(0.5f);
+        // arcade.onReady += ArcadeReady;
         
-        for (var i = 0; i < 7; i++)
-        {
-            AddCard();
-            yield return new WaitForSeconds(0.1f);
+        if (instance != null && instance != this) {
+            Destroy (gameObject);
+            return;
         }
+
+        instance = this;
+    }
+
+    public void ArcadeReady(Arcade a)
+    {
+        arcade = a;
+        field.Setup(arcade);
+        arcade.AddCards(7);
     }
 
     public void SetState(bool canAct)
     {
+        if (held)
+        {
+            held.draggable.DropLocked = !canAct;
+        }
         cards.ForEach(c => c.draggable.DropLocked = !canAct);
     }
+    
+    public void SetPickState(bool canAct)
+    {
+        cards.ForEach(c => c.draggable.CanDrag = canAct);
+    }
 
-    public void AddCard()
+    public void AddCard(string letter)
     {
         AudioManager.Instance.PlayEffectFromCollection(2, transform.position, 0.6f);
-        var card = Instantiate(cardPrefab, Vector3.zero.WhereY(-5), Quaternion.identity);
-        card.Setup(wordDictionary.GetRandomLetter());
+        var card = Instantiate(cardPrefab, new Vector3(5, -5, 0), Quaternion.identity);
+        card.Setup(letter);
         cards.Add(card);
-        card.draggable.DropLocked = cards.First().draggable.DropLocked;
+        var sample = cards.First().draggable;
+        card.draggable.DropLocked = sample.DropLocked;
+        card.draggable.CanDrag = sample.CanDrag;
         PositionCards();
         AddListeners(card);
     }
@@ -56,19 +79,18 @@ public class Hand : MonoBehaviour
     {
         card.draggable.click += () =>
         {
-            cards.Remove(card);
             PositionCards();
         };
         card.draggable.dropCancelled += () =>
         {
-            held = null;
-            cards.Add(card);
+            cards.Add(held);
             if (field.Undoing)
             {
                 field.ShowUndoArrow();
                 return;
             }
             PositionCards();
+            held = null;
         };
         card.draggable.dropped += _ =>
         {
@@ -77,15 +99,21 @@ public class Hand : MonoBehaviour
             field.AddCard(card, true, true);
             AudioManager.Instance.PlayEffectFromCollection(2, card.transform.position, 0.3f);
 
+            if (field.Undoing)
+            {
+                SetPickState(true);
+            }
+
             if (!field.Undoing)
             {
-                AddCard();   
+                arcade.AddCards(1);
             }
         };
         card.draggable.picked += _ =>
         {
             held = card;
             field.HideUndoArrow();
+            cards.Remove(card);
         };
         
         card.draggable.preview += ShowPreview;
@@ -119,21 +147,14 @@ public class Hand : MonoBehaviour
 
     private void Update()
     {
-        if (held)
-        {
-            var ordered = cards.OrderBy(c => c.transform.position.x).ToList();
-            var index = ordered.IndexOf(held);
-
-            if (index != prevIndex)
-            {
-                prevIndex = index;
-                PositionCards();
-            }
-        }
+        if (!held) return;
         
-        if (Application.isEditor && Input.GetKeyDown(KeyCode.A))
-        {
-            AddCard();
-        }
+        var ordered = cards.OrderBy(c => c.transform.position.x).ToList();
+        var index = ordered.IndexOf(held);
+
+        if (index == prevIndex) return;
+        
+        prevIndex = index;
+        PositionCards();
     }
 }
