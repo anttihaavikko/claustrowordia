@@ -293,17 +293,18 @@ public class Field : MonoBehaviour
         yield return new WaitForSeconds(1f);
         
         twistHolder.gameObject.SetActive(true);
-        
+
+        var index = 0;
         twists.ForEach(t =>
         {
-            AddLettersTo(t);
             var twist = Instantiate(twistPanelPrefab, twistHolder);
             twist.Setup(t);
             twist.button.onClick.AddListener(() =>
             {
-                ApplyTwist(t);
+                arcade.PickTwist(t.Index);
                 twist.button.onClick.RemoveAllListeners();
             });
+            index++;
         });
 
         yield return new WaitForSeconds(0.5f);
@@ -574,13 +575,6 @@ public class Field : MonoBehaviour
 
             yield return null;
         }
-    }
-
-    private void AddLettersTo(Twist twist)
-    {
-        var randomLetter = wordDictionary.GetRandomLetter();
-        var fieldLetter = grid.All().Where(c => c && c.Letter != randomLetter).OrderBy(_ => Random.value).First();
-        twist.SetLetters(fieldLetter.Letter, randomLetter);
     }
 
     public void Undo()

@@ -96,7 +96,20 @@ public class Arcade : NetworkBehaviour
         }
 
         twists = GetTwists().OrderBy(_ => Random.value).Take(3).ToList();
+        for (var i = 0; i < twists.Count; i++)
+        {
+            AddLettersTo(twists[i], i);
+        }
+
         field.ShowTwists(twists);
+    }
+    
+    private void AddLettersTo(Twist twist, int index)
+    {
+        var randomLetter = wordDictionary.GetRandomLetter();
+        var fieldLetter = grid.All().Where(c => c != null && c != randomLetter).OrderBy(_ => Random.value).First();
+        twist.SetLetters(fieldLetter, randomLetter);
+        twist.Index = index;
     }
 
     [Command]

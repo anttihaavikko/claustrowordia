@@ -6,6 +6,7 @@ public class Twist
     
     public string FirstLetter { get; private set; }
     public string SecondLetter { get; private set; }
+    public int Index { get; set; }
 
     public Twist(TwistType type, string title, string description)
     {
