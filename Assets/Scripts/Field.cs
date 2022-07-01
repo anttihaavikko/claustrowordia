@@ -138,7 +138,7 @@ public class Field : MonoBehaviour
         card.Setup(letter);
         card.draggable.DropLocked = true;
         card.hoverer.enabled = false;
-        AddCard(card);
+        AddCard(card, false);
     }
 
     public void AddCard(Card card, bool check = true, bool fromHand = false)

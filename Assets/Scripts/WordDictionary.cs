@@ -67,7 +67,7 @@ public class WordDictionary : ScriptableObject
     {
         Random.InitState(seed);
         var word = RandomWord();
-        Debug.Log("Seeding random letters with word '" + word + "'");
+        // Debug.Log("Seeding random letters with word '" + word + "'");
         letterPool.AddRange(Regex.Split(word, string.Empty).Where(IsOk).OrderBy(l => Random.value));
     }
 

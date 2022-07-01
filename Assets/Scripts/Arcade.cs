@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Assets.Scripts.Core;
 using Mirror;
 using UnityEngine;
@@ -197,10 +198,16 @@ public class Arcade : NetworkBehaviour
     [Command]
     private void InitPlayer(string gameToken)
     {
-        Random.InitState(123);
+        var seed = GetSeed();
+        Random.InitState(seed);
         PlayerReady();
         token = gameToken;
         serverApi.ActivatePlayer(gameToken, _ => { }, _ => { });
+        
+        PlaceCard(new Vector3(-1f, -1f, 0), wordDictionary.GetRandomLetter(seed));
+        PlaceCard(new Vector3(1f, -1f, 0), wordDictionary.GetRandomLetter(seed));
+        PlaceCard(new Vector3(-1f, 1f, 0), wordDictionary.GetRandomLetter(seed));
+        PlaceCard(new Vector3(1f, 1f, 0), wordDictionary.GetRandomLetter(seed));
     }
     
     private void AutoConnect_OnServerReady(string seed)
@@ -220,11 +227,12 @@ public class Arcade : NetworkBehaviour
         var hand = Hand.Instance;
         var field = hand.Field;
         Hand.Instance.ArcadeReady(this);
-        
-        field.PlaceCard(new Vector3(-1f, -1f, 0), wordDictionary.GetRandomLetter(GetSeed()));
-        field.PlaceCard(new Vector3(1f, -1f, 0), wordDictionary.GetRandomLetter(GetSeed()));
-        field.PlaceCard(new Vector3(-1f, 1f, 0), wordDictionary.GetRandomLetter(GetSeed()));
-        field.PlaceCard(new Vector3(1f, 1f, 0), wordDictionary.GetRandomLetter(GetSeed()));
+    }
+
+    [TargetRpc]
+    private void PlaceCard(Vector3 pos, string letter)
+    {
+        Hand.Instance.Field.PlaceCard(pos, letter);
     }
 
     [Command]
