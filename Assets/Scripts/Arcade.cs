@@ -42,9 +42,9 @@ public class Arcade : NetworkBehaviour
 
         if (isClient)
         {
-            // var gameToken = ExternalScriptBehavior.Token();
-            // clientApi = new UltimateArcadeGameClientAPI(gameToken, ExternalScriptBehavior.BaseApiServerName());
-            InitPlayer("gameToken");
+            var gameToken = ExternalScriptBehavior.Token();
+            clientApi = new UltimateArcadeGameClientAPI(gameToken, ExternalScriptBehavior.BaseApiServerName());
+            InitPlayer(gameToken);
         }
     }
 
@@ -203,6 +203,8 @@ public class Arcade : NetworkBehaviour
     [Command]
     private void InitPlayer(string gameToken)
     {
+        Debug.Log("Player connected, starting");
+        
         var seed = GetSeed();
         Random.InitState(seed);
         PlayerReady();
