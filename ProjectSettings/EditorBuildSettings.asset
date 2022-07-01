@@ -9,18 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Loader.unity
     guid: 52b55352a2c4d49f99a76a736e438405
   - enabled: 1
-    path: Assets/Scenes/Start.unity
-    guid: d0fb0b16efe8d4c96b819d41d659b073
-  - enabled: 1
-    path: Assets/Scenes/Options.unity
-    guid: 871c26d58b498403a89a29e37009b2cc
-  - enabled: 1
-    path: Assets/Scenes/Name.unity
-    guid: 3ba86e8db3da245d3a99f701bf5234aa
-  - enabled: 1
-    path: Assets/Scenes/Language.unity
-    guid: a55108faa8b904d039177e9624a51483
-  - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
