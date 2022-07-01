@@ -22,7 +22,7 @@ public class Arcade : NetworkBehaviour
     private int score;
     private int multiAddition = 1;
     private List<Twist> twists;
-    private int move;
+    private int moves;
 
     private bool IsGameOver => grid.All().Count(c => !string.IsNullOrEmpty(c)) >= 49;
     
@@ -81,32 +81,55 @@ public class Arcade : NetworkBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-        var field = Hand.Instance.Field;
-
         if (IsGameOver)
         {
-            field.GameOver();
+            GameOver();
             yield break;
         }
 
-        if (move == 0 || move % 10 != 0)
+        if (moves == 0 || moves % 10 != 0)
         {
-            Hand.Instance.SetState(true);
+            NextRound(!words.Any());
             yield break;
         }
 
+        Random.InitState(GetSeed());
         twists = GetTwists().OrderBy(_ => Random.value).Take(3).ToList();
         for (var i = 0; i < twists.Count; i++)
         {
             AddLettersTo(twists[i], i);
         }
 
-        field.ShowTwists(twists);
+        ShowTwists();
     }
-    
+
+    [TargetRpc]
+    private void ShowTwists()
+    {
+        Hand.Instance.Field.ShowTwists(twists);
+    }
+
+    [TargetRpc]
+    private void GameOver()
+    {
+        Hand.Instance.Field.GameOver();
+    }
+
+    [TargetRpc]
+    private void NextRound(bool canUndo)
+    {
+        var hand = Hand.Instance;
+        hand.SetState(true);
+
+        if (canUndo)
+        {
+            hand.Field.ShowUndo();   
+        }
+    }
+
     private void AddLettersTo(Twist twist, int index)
     {
-        var randomLetter = wordDictionary.GetRandomLetter();
+        var randomLetter = wordDictionary.GetRandomLetter(GetSeed());
         var fieldLetter = grid.All().Where(c => c != null && c != randomLetter).OrderBy(_ => Random.value).First();
         twist.SetLetters(fieldLetter, randomLetter);
         twist.Index = index;
@@ -116,9 +139,16 @@ public class Arcade : NetworkBehaviour
     public void PickTwist(int index)
     {
         var twist = twists[index];
-        Hand.Instance.Field.ApplyTwist(twist);
+        ApplyTwist(twist.Type, twist.FirstLetter, twist.SecondLetter);
     }
-    
+
+    [TargetRpc]
+    private void ApplyTwist(TwistType twist, string first, string second)
+    {
+        Hand.Instance.Field.ApplyTwist(twist, first, second);
+    }
+
+
     private static IEnumerable<Twist> GetTwists()
     {
         return new[]
@@ -179,6 +209,11 @@ public class Arcade : NetworkBehaviour
         Random.InitState(AutoConnect.RandomSeed.GetHashCode());
     }
 
+    private int GetSeed()
+    {
+        return 123 + moves;
+    }
+
     [TargetRpc]
     private void PlayerReady()
     {
@@ -186,10 +221,10 @@ public class Arcade : NetworkBehaviour
         var field = hand.Field;
         Hand.Instance.ArcadeReady(this);
         
-        field.PlaceCard(new Vector3(-1f, -1f, 0), wordDictionary.GetRandomLetter());
-        field.PlaceCard(new Vector3(1f, -1f, 0), wordDictionary.GetRandomLetter());
-        field.PlaceCard(new Vector3(-1f, 1f, 0), wordDictionary.GetRandomLetter());
-        field.PlaceCard(new Vector3(1f, 1f, 0), wordDictionary.GetRandomLetter());
+        field.PlaceCard(new Vector3(-1f, -1f, 0), wordDictionary.GetRandomLetter(GetSeed()));
+        field.PlaceCard(new Vector3(1f, -1f, 0), wordDictionary.GetRandomLetter(GetSeed()));
+        field.PlaceCard(new Vector3(-1f, 1f, 0), wordDictionary.GetRandomLetter(GetSeed()));
+        field.PlaceCard(new Vector3(1f, 1f, 0), wordDictionary.GetRandomLetter(GetSeed()));
     }
 
     [Command]
@@ -202,24 +237,31 @@ public class Arcade : NetworkBehaviour
     {
         for (var i = 0; i < amount; i++)
         {
-            Hand.Instance.AddCard(wordDictionary.GetRandomLetter());
+            AddCard(wordDictionary.GetRandomLetter(GetSeed()));
             yield return new WaitForSeconds(0.1f);
         }
     }
 
+    [TargetRpc]
+    private void AddCard(string letter)
+    {
+        Hand.Instance.AddCard(letter);
+    }
+
     [Command]
-    public void PlaceLetter(string letter, int x, int y)
+    public void PlaceLetter(string letter, int x, int y, bool check)
     {
         grid.Set(letter, x, y);
+        if (!check) return;
         StartCoroutine(Check(x, y));
-        move++;
+        moves++;
     }
     
     [Command]
     public void RemoveLetter(int x, int y)
     {
         grid.Set(null, x, y);
-        move--;
+        moves--;
     }
     
     [Command]

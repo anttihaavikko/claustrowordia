@@ -41,16 +41,16 @@ public class WordDictionary : ScriptableObject
         return words.ContainsKey(word.ToLower());
     }
 
-    public string GetRandomLetter(bool remove = true)
+    public string GetRandomLetter(int seed, bool remove = true)
     {
         if (!letterPool.Any())
-            PopulateLetterPool();
+            PopulateLetterPool(seed);
 
         var letter = letterPool[0];
-        if(remove)
+        if (remove)
         {
             letterPool.RemoveAt(0);
-            next = GetRandomLetter(false);
+            next = GetRandomLetter(seed, false);
         }
 
         return letter;
@@ -63,10 +63,11 @@ public class WordDictionary : ScriptableObject
         return word;
     }
 
-    void PopulateLetterPool()
+    void PopulateLetterPool(int seed)
     {
+        Random.InitState(seed);
         var word = RandomWord();
-        //Debug.Log("Seeding random letters with word '" + word + "'");
+        Debug.Log("Seeding random letters with word '" + word + "'");
         letterPool.AddRange(Regex.Split(word, string.Empty).Where(IsOk).OrderBy(l => Random.value));
     }
 

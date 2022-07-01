@@ -156,7 +156,7 @@ public class Field : MonoBehaviour
 
         if (arcade && arcade.isActiveAndEnabled)
         {
-            arcade.PlaceLetter(card.Letter, x, y);   
+            arcade.PlaceLetter(card.Letter, x, y, check);   
         }
 
         undoButton.Hide();
@@ -215,15 +215,15 @@ public class Field : MonoBehaviour
 
             yield return new WaitForSeconds(0.5f);
         }
-        
-        if (multi == 1 && lastMoved)
-        {
-            undoButton.Show();
-        }
 
         ShowWordDefinition();
 
         undoing = false;
+    }
+
+    public void ShowUndo()
+    {
+        undoButton.Show();
     }
 
     private void ShowWordDefinition()
@@ -255,14 +255,13 @@ public class Field : MonoBehaviour
 
     public void ShowTwists(List<Twist> twists)
     {
+        undoButton.Hide();
         StartCoroutine(DoTwist(twists));
     }
 
     private IEnumerator DoTwist(List<Twist> twists)
     {
         bubble.CanHide = false;
-        
-        undoButton.Hide();
 
         foreach (Transform child in twistHolder)
         {
@@ -300,7 +299,7 @@ public class Field : MonoBehaviour
         showBoardButton.Show();
     }
 
-    public void ApplyTwist(Twist twist)
+    public void ApplyTwist(TwistType twist, string first, string second)
     {
         showBoardButton.Hide();
         hand.SetState(true);
@@ -310,15 +309,15 @@ public class Field : MonoBehaviour
         twistTitle.Hide();
         twistBanner.Hide();
 
-        switch (twist.Type)
+        switch (twist)
         {
             case TwistType.Replace:
-                arcade.DestroyAll(twist.FirstLetter, twist.SecondLetter);
-                StartCoroutine(DestroyAll(twist.FirstLetter, twist.SecondLetter));
+                arcade.DestroyAll(first, second);
+                StartCoroutine(DestroyAll(first, second));
                 break;
             case TwistType.Destroy:
-                arcade.DestroyAll(twist.FirstLetter, null);
-                StartCoroutine(DestroyAll(twist.FirstLetter));
+                arcade.DestroyAll(first, null);
+                StartCoroutine(DestroyAll(first));
                 break;
             case TwistType.AddCards:
                 arcade.AddCards(3);
