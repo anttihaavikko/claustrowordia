@@ -167,6 +167,7 @@ public class Arcade : NetworkBehaviour
     [Command]
     private void InitPlayer(string gameToken)
     {
+        Random.InitState(123);
         PlayerReady();
         token = gameToken;
         serverApi.ActivatePlayer(gameToken, _ => { }, _ => { });
@@ -181,7 +182,14 @@ public class Arcade : NetworkBehaviour
     [TargetRpc]
     private void PlayerReady()
     {
+        var hand = Hand.Instance;
+        var field = hand.Field;
         Hand.Instance.ArcadeReady(this);
+        
+        field.PlaceCard(new Vector3(-1f, -1f, 0), wordDictionary.GetRandomLetter());
+        field.PlaceCard(new Vector3(1f, -1f, 0), wordDictionary.GetRandomLetter());
+        field.PlaceCard(new Vector3(-1f, 1f, 0), wordDictionary.GetRandomLetter());
+        field.PlaceCard(new Vector3(1f, 1f, 0), wordDictionary.GetRandomLetter());
     }
 
     [Command]
@@ -211,7 +219,6 @@ public class Arcade : NetworkBehaviour
     public void RemoveLetter(int x, int y)
     {
         grid.Set(null, x, y);
-        StartCoroutine(Check(x, y));
         move--;
     }
     

@@ -65,11 +65,6 @@ public class Field : MonoBehaviour
         tutorial = new Tutorial<TutorialType>("WordGridTutorials");
         
         EffectCamera.Effect(0.1f);
-        
-        // PlaceCard(new Vector3(-1f, -1f, 0));
-        // PlaceCard(new Vector3(1f, -1f, 0));
-        // PlaceCard(new Vector3(-1f, 1f, 0));
-        // PlaceCard(new Vector3(1f, 1f, 0));
 
         tutorial.onShow += ShowTutorial;
 
@@ -133,11 +128,10 @@ public class Field : MonoBehaviour
         showBoardButton.text.text = showingBoard ? "BACK TO TWISTS" : "SHOW BOARD";
     }
 
-    private void PlaceCard(Vector3 pos)
+    public void PlaceCard(Vector3 pos, string letter)
     {
         var card = Instantiate(cardPrefab, pos, Quaternion.identity);
-        card.Setup(wordDictionary.GetRandomLetter());
-        Debug.Log("Lock placed card");
+        card.Setup(letter);
         card.draggable.DropLocked = true;
         card.hoverer.enabled = false;
         AddCard(card);
