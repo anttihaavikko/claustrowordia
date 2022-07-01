@@ -517,6 +517,7 @@ public class Field : MonoBehaviour
             pos += Vector3.down * 0.5f + new Vector3(Random.Range(-diff, diff), 0, 0);
             EffectManager.AddTextPopup(extraText, pos);
             AudioManager.Instance.PlayEffectFromCollection(2, pos, 1.5f);
+            // TODO: handle on server side too
             multiplier *= 10;
             
             tutorial.Show(TutorialType.FullMatch);
@@ -642,8 +643,7 @@ internal struct WordMatch
 internal struct LetterMatch
 {
     public string word;
-    public IEnumerable<string> letters;
-    public bool reverse;
+    public IEnumerable<TileLetter> letters;
 }
 
 public enum TutorialType

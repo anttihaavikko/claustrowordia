@@ -18,14 +18,14 @@ public class Arcade : NetworkBehaviour
     private UltimateArcadeGameClientAPI clientApi;
     private string token;
     
-    private readonly TileGrid<string> grid = new(7, 7);
+    private readonly TileGrid<TileLetter> grid = new(7, 7);
     private readonly List<LetterMatch> words = new();
     private int score;
     private int multiAddition = 1;
     private List<Twist> twists;
     private int moves;
 
-    private bool IsGameOver => grid.All().Count(c => !string.IsNullOrEmpty(c)) >= 49;
+    private bool IsGameOver => grid.All().Count(c => c != null) >= 49;
     
     private void Awake()
     {
@@ -58,8 +58,8 @@ public class Arcade : NetworkBehaviour
         var colsReversed = colCards.ToList();
         colsReversed.Reverse();
         
-        var rowLetters = rowCards.Select(c => c ?? " ").ToList();
-        var colLetters = colCards.Select(c => c ?? " ").ToList();
+        var rowLetters = rowCards.Select(c => c?.letter ?? " ").ToList();
+        var colLetters = colCards.Select(c => c?.letter ?? " ").ToList();
         
         var row = string.Join(string.Empty, rowLetters);
         var col = string.Join(string.Empty, colLetters);
@@ -75,6 +75,12 @@ public class Arcade : NetworkBehaviour
 
         foreach (var w in words.OrderBy(w => w.word.Length))
         {
+            w.letters.ToList().ForEach(l => l.used = true);
+            if (grid.All().All(c => c == null || c.used))
+            {
+                multi *= 10;
+            }
+            
             var amount = Field.GetScore(w.word) * multi;
             score += amount;
             AddScore(amount);
@@ -131,8 +137,8 @@ public class Arcade : NetworkBehaviour
     private void AddLettersTo(Twist twist, int index)
     {
         var randomLetter = wordDictionary.GetRandomLetter(GetSeed());
-        var fieldLetter = grid.All().Where(c => c != null && c != randomLetter).OrderBy(_ => Random.value).First();
-        twist.SetLetters(fieldLetter, randomLetter);
+        var fieldLetter = grid.All().Where(c => c != null && c.letter != randomLetter).OrderBy(_ => Random.value).First();
+        twist.SetLetters(fieldLetter.letter, randomLetter);
         twist.Index = index;
     }
 
@@ -165,7 +171,7 @@ public class Arcade : NetworkBehaviour
         };
     }
     
-    IEnumerator CheckString(string text, int mustInclude, List<string> letters, bool isReversed = false)
+    IEnumerator CheckString(string text, int mustInclude, List<TileLetter> letters, bool isReversed = false)
     {
         if (text.Length < 3) yield break;
         
@@ -180,7 +186,6 @@ public class Arcade : NetworkBehaviour
                     {
                         word = word,
                         letters = letters.GetRange(start, len),
-                        reverse = isReversed
                     });
                 }
             }
@@ -259,7 +264,7 @@ public class Arcade : NetworkBehaviour
     [Command]
     public void PlaceLetter(string letter, int x, int y, bool check)
     {
-        grid.Set(letter, x, y);
+        grid.Set(new TileLetter(letter), x, y);
         if (!check) return;
         StartCoroutine(Check(x, y));
         moves++;
@@ -309,7 +314,7 @@ public class Arcade : NetworkBehaviour
     [Command]
     public void DestroyAll(string letter, string replacement)
     {
-        var cards = grid.All().Where(c => c == letter).ToList();
+        var cards = grid.All().Where(c => c != null && c.letter == letter).ToList();
         var positions = cards.Select(c => grid.GetPosition(c));
         grid.Remove(cards);
 
@@ -351,5 +356,16 @@ public class Arcade : NetworkBehaviour
     public void MoreMulti()
     {
         multiAddition++;
+    }
+}
+
+public class TileLetter
+{
+    public string letter;
+    public bool used;
+
+    public TileLetter(string l)
+    {
+        letter = l;
     }
 }
