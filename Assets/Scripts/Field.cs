@@ -33,7 +33,8 @@ public class Field : MonoBehaviour
     [SerializeField] private WordDefiner wordDefiner;
     [SerializeField] private Wikier wikier;
     [SerializeField] private SoundCollection notes;
-    
+    [SerializeField] private GameObject muteIndicator;
+
     private Arcade arcade;
 
     public bool CanAct { get; private set; }
@@ -49,6 +50,7 @@ public class Field : MonoBehaviour
     private int multiAddition = 1;
 
     private Tutorial<TutorialType> tutorial;
+    private bool muted;
 
     private void Awake()
     {
@@ -57,6 +59,9 @@ public class Field : MonoBehaviour
 
     private void Start()
     {
+        muted = PlayerPrefs.HasKey("WordGridMuted");
+        SetVolumes();
+        
         AudioManager.Instance.Lowpass(false);
         AudioManager.Instance.Chorus(false);
         AudioManager.Instance.TargetPitch = 1f;
@@ -602,6 +607,29 @@ public class Field : MonoBehaviour
     public void AddScore(int amount)
     {
         scoreDisplay.Add(amount);
+    }
+
+    public void ToggleMute()
+    {
+        muted = !muted;
+        SetVolumes();
+    }
+
+    private void SetVolumes()
+    {
+        muteIndicator.SetActive(muted);
+        
+        var volume = muted ? 0 : 0.5f;
+        AudioManager.Instance.ChangeMusicVolume(volume);
+        AudioManager.Instance.ChangeSoundVolume(volume);
+
+        if (muted)
+        {
+            PlayerPrefs.SetInt("WordGridMuted", 1);
+            return;
+        }
+        
+        PlayerPrefs.DeleteKey("WordGridMuted");
     }
 }
 
