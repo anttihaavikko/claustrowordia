@@ -20,10 +20,12 @@ public class Arcade : NetworkBehaviour
     
     private readonly TileGrid<TileLetter> grid = new(7, 7);
     private readonly List<LetterMatch> words = new();
+    private bool started;
     private int score;
     private int multiAddition = 1;
     private List<Twist> twists;
     private int moves;
+    private int seed;
 
     private bool IsGameOver => grid.All().Count(c => c != null) >= 49;
     
@@ -42,10 +44,18 @@ public class Arcade : NetworkBehaviour
 
         if (isClient)
         {
-            var gameToken = ExternalScriptBehavior.Token();
-            clientApi = new UltimateArcadeGameClientAPI(gameToken, ExternalScriptBehavior.BaseApiServerName());
+            var gameToken = GetToken();
             InitPlayer(gameToken);
         }
+    }
+
+    private string GetToken()
+    {
+        if (Application.isEditor) return "DummyToken";
+        
+        var gameToken = ExternalScriptBehavior.Token();
+        clientApi = new UltimateArcadeGameClientAPI(gameToken, ExternalScriptBehavior.BaseApiServerName());
+        return gameToken;
     }
 
     private IEnumerator Check(int x, int y)
@@ -91,6 +101,7 @@ public class Arcade : NetworkBehaviour
         if (IsGameOver)
         {
             GameOver();
+            SubmitScore();
             yield break;
         }
 
@@ -203,36 +214,34 @@ public class Arcade : NetworkBehaviour
     [Command]
     private void InitPlayer(string gameToken)
     {
-        Debug.Log("Player connected, starting");
-        
-        var seed = GetSeed();
-        Random.InitState(seed);
-        PlayerReady();
+        Random.InitState(GetSeed());
         token = gameToken;
         serverApi.ActivatePlayer(gameToken, _ => { }, _ => { });
         
+        if (started) return;
+        started = true;
+        
+        PlayerReady();
+
         PlaceCard(new Vector3(-1f, -1f, 0), wordDictionary.GetRandomLetter(seed));
         PlaceCard(new Vector3(1f, -1f, 0), wordDictionary.GetRandomLetter(seed));
         PlaceCard(new Vector3(-1f, 1f, 0), wordDictionary.GetRandomLetter(seed));
         PlaceCard(new Vector3(1f, 1f, 0), wordDictionary.GetRandomLetter(seed));
     }
     
-    private void AutoConnect_OnServerReady(string seed)
+    private void AutoConnect_OnServerReady(string initialSeed)
     {
-        Debug.Log($"Seed set to {seed}");
-        Random.InitState(AutoConnect.RandomSeed.GetHashCode());
+        seed = initialSeed.GetHashCode();
     }
 
     private int GetSeed()
     {
-        return 123 + moves;
+        return seed + moves;
     }
 
     [TargetRpc]
     private void PlayerReady()
     {
-        var hand = Hand.Instance;
-        var field = hand.Field;
         Hand.Instance.ArcadeReady(this);
     }
 
@@ -337,15 +346,13 @@ public class Arcade : NetworkBehaviour
         StartCoroutine(serverApi.ReportPlayerScore(token, score,
             () =>
             {
-                UADebug.Log("player score reported");
-                ClientGameOver();
-                StartCoroutine(serverApi.Shutdown(
-                        () => UADebug.Log("Shutdown requested"),
-                        err => UADebug.Log("couldn't request shutdown:" + err)
-                    )
-                );
+                UADebug.Log($"Score reported {score}");
+                Invoke(nameof(ClientGameOver), 2f);
+                StartCoroutine(serverApi.Shutdown(() => { }, _ => { }));
             },
-            err => UADebug.Log("ERROR player join." + err)));
+            err => {}
+            )
+        );
     } 
     
     [TargetRpc]
