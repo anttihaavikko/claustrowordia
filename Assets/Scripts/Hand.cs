@@ -19,6 +19,7 @@ public class Hand : MonoBehaviour
     private List<Card> cards = new();
     private Card held;
     private int prevIndex = -1;
+    private bool started;
 
     public int Size => cards.Count;
 
@@ -45,6 +46,9 @@ public class Hand : MonoBehaviour
     {
         arcade = a;
         field.Setup(arcade);
+        if (started) return;
+        started = true;
+        arcade.PlaceStarterCards();
         arcade.AddCards(7);
     }
 

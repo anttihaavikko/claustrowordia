@@ -20,7 +20,6 @@ public class Arcade : NetworkBehaviour
     
     private readonly TileGrid<TileLetter> grid = new(7, 7);
     private readonly List<LetterMatch> words = new();
-    private bool started;
     private int score;
     private int multiAddition = 1;
     private List<Twist> twists;
@@ -213,16 +212,8 @@ public class Arcade : NetworkBehaviour
         Random.InitState(GetSeed());
         token = gameToken;
         serverApi.ActivatePlayer(gameToken, _ => { }, _ => { });
-        
-        if (started) return;
-        started = true;
-        
-        PlayerReady();
 
-        PlaceCard(new Vector3(-1f, -1f, 0), wordDictionary.GetRandomLetter(seed));
-        PlaceCard(new Vector3(1f, -1f, 0), wordDictionary.GetRandomLetter(seed));
-        PlaceCard(new Vector3(-1f, 1f, 0), wordDictionary.GetRandomLetter(seed));
-        PlaceCard(new Vector3(1f, 1f, 0), wordDictionary.GetRandomLetter(seed));
+        PlayerReady();
     }
     
     private void AutoConnect_OnServerReady(string initialSeed)
@@ -239,6 +230,15 @@ public class Arcade : NetworkBehaviour
     private void PlayerReady()
     {
         Hand.Instance.ArcadeReady(this);
+    }
+
+    [Command]
+    public void PlaceStarterCards()
+    {
+        PlaceCard(new Vector3(-1f, -1f, 0), wordDictionary.GetRandomLetter(seed));
+        PlaceCard(new Vector3(1f, -1f, 0), wordDictionary.GetRandomLetter(seed));
+        PlaceCard(new Vector3(-1f, 1f, 0), wordDictionary.GetRandomLetter(seed));
+        PlaceCard(new Vector3(1f, 1f, 0), wordDictionary.GetRandomLetter(seed));
     }
 
     [TargetRpc]
@@ -337,7 +337,7 @@ public class Arcade : NetworkBehaviour
     }
 
     [Command]
-    public void SubmitScore()
+    private void SubmitScore()
     {
         StartCoroutine(serverApi.ReportPlayerScore(token, score,
             () =>
@@ -346,7 +346,7 @@ public class Arcade : NetworkBehaviour
                 Invoke(nameof(ClientGameOver), 2f);
                 StartCoroutine(serverApi.Shutdown(() => { }, _ => { }));
             },
-            err => {}
+            _ => {}
             )
         );
     } 
