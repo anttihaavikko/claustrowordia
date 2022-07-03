@@ -86,12 +86,8 @@ public class Arcade : NetworkBehaviour
         foreach (var w in words.OrderBy(w => w.word.Length))
         {
             w.letters.ToList().ForEach(l => l.used = true);
-            if (grid.All().All(c => c == null || c.used))
-            {
-                multi *= 10;
-            }
-            
-            var amount = Field.GetScore(w.word) * multi;
+            var bonusMulti = grid.All().All(c => c == null || c.used) ? 10 : 1;
+            var amount = Field.GetScore(w.word) * multi * bonusMulti;
             score += amount;
             AddScore(amount);
             multi += multiAddition;
