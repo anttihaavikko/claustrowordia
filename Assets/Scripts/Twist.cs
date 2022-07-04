@@ -1,24 +1,43 @@
+using System;
+using UnityEngine;
+
+[Serializable]
 public class Twist
 {
-    public TwistType Type { get; private set; }
-    public string Title { get; private set; }
-    public string Description { get; private set; }
-    
-    public string FirstLetter { get; private set; }
-    public string SecondLetter { get; private set; }
-    public int Index { get; set; }
+    public TwistType type;
+    public string title;
+    public string description;
+    public string firstLetter, secondLetter;
+    public int index;
+
+    public TwistType Type => type;
+    public string Title => title;
+    public string Description => description;
+
+    public string FirstLetter => firstLetter;
+    public string SecondLetter => secondLetter;
+    public int Index => index;
+
+    public Twist()
+    {
+    }
 
     public Twist(TwistType type, string title, string description)
     {
-        Type = type;
-        Title = title;
-        Description = description;
+        this.type = type;
+        this.title = title;
+        this.description = description;
     }
 
     public void SetLetters(string first, string second)
     {
-        FirstLetter = first;
-        SecondLetter = second;
+        firstLetter = first;
+        secondLetter = second;
+    }
+
+    public void SetIndex(int i)
+    {
+        index = i;
     }
 }
 

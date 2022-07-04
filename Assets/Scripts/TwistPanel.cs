@@ -21,8 +21,8 @@ public class TwistPanel : MonoBehaviour
     {
         titleField.text = twist.Title;
         var sb = new StringBuilder(twist.Description);
-        sb.Replace("[1]", $"<color=#F3DFA2>{twist.FirstLetter.ToUpper()}</color>");
-        sb.Replace("[2]", $"<color=#F3DFA2>{twist.SecondLetter.ToUpper()}</color>");
+        sb.Replace("[1]", $"<color=#F3DFA2>{twist.FirstLetter?.ToUpper()}</color>");
+        sb.Replace("[2]", $"<color=#F3DFA2>{twist.SecondLetter?.ToUpper()}</color>");
         sb.Replace("(", "<color=#F3DFA2>");
         sb.Replace(")", "</color>");
         descField.text = sb.ToString();

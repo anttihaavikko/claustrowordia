@@ -113,13 +113,13 @@ public class Arcade : NetworkBehaviour
             AddLettersTo(twists[i], i);
         }
 
-        ShowTwists();
+        ShowTwists(twists);
     }
 
     [TargetRpc]
-    private void ShowTwists()
+    private void ShowTwists(List<Twist> t)
     {
-        Hand.Instance.Field.ShowTwists(twists);
+        Hand.Instance.Field.ShowTwists(t);
     }
 
     [TargetRpc]
@@ -145,7 +145,7 @@ public class Arcade : NetworkBehaviour
         var randomLetter = wordDictionary.GetRandomLetter(GetSeed());
         var fieldLetter = grid.All().Where(c => c != null && c.letter != randomLetter).OrderBy(_ => Random.value).First();
         twist.SetLetters(fieldLetter.letter, randomLetter);
-        twist.Index = index;
+        twist.SetIndex(index);
     }
 
     [Command]
