@@ -615,6 +615,7 @@ public class Field : MonoBehaviour
             var y = Mathf.RoundToInt(-p.y + 3);
             lastMoved.draggable.CanDrag = true;
             lastMoved.hoverer.enabled = true;
+            lastMoved.draggable.SetSortOrder(50);
             var position = lastMoved.transform.position;
             var pos = hand.transform.position + (hand.Size + 2) * 0.5f * Vector3.right;
             undoArrow.transform.position = pos;

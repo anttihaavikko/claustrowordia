@@ -50,7 +50,7 @@ public class Draggable : MonoBehaviour
         SetSortOrder(dragSortOrder);
     }
 
-    private void SetSortOrder(int order)
+    public void SetSortOrder(int order)
     {
         if (sortingGroup)
         {
