@@ -455,6 +455,8 @@ public class Field : MonoBehaviour
         {
             var card = Instantiate(cardPrefab, p, Quaternion.identity);
             card.Setup(replacement);
+            card.draggable.CanDrag = false;
+            card.hoverer.enabled = false;
             AddCard(card, false);
 
             EffectManager.AddEffect(0, p);
@@ -467,6 +469,8 @@ public class Field : MonoBehaviour
             yield return Check(x, y);
             yield return new WaitForSeconds(0.1f);
         }
+        
+        hand.SetState(true);
     }
 
     private void DoScoreAnims(int wordLength, int multiplier)

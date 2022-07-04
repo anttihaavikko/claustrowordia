@@ -57,7 +57,7 @@ public class Arcade : NetworkBehaviour
         return gameToken;
     }
 
-    private IEnumerator Check(int x, int y)
+    private IEnumerator Check(int x, int y, bool unlockHandAfter = false)
     {
         var rowCards = grid.GetRow(y).ToList();
         var colCards = grid.GetColumn(x).ToList();
@@ -332,7 +332,7 @@ public class Arcade : NetworkBehaviour
             if (!p.HasValue) continue;
             var x = Mathf.RoundToInt(p.Value.x + 3);
             var y = Mathf.RoundToInt(-p.Value.y + 3);
-            StartCoroutine(Check(x, y));
+            StartCoroutine(Check(x, y, true));
         }
     }
 
