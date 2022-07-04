@@ -467,6 +467,8 @@ public class Field : MonoBehaviour
             var card = Instantiate(cardPrefab, p, Quaternion.identity);
             card.Setup(replacement);
             AddCard(card, false);
+            card.draggable.CanDrag = false;
+            card.hoverer.enabled = false;
 
             EffectManager.AddEffect(0, p);
             
