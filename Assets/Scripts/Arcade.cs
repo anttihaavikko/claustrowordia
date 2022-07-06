@@ -48,10 +48,15 @@ public class Arcade : NetworkBehaviour
         }
     }
 
+    private void Disconnected(NetworkConnectionToClient connection)
+    {
+        ExternalScriptBehavior.ReportErrorAndCloseGame("Disconnected from the server");
+    }
+
     private string GetToken()
     {
         if (Application.isEditor) return "DummyToken";
-        
+
         var gameToken = ExternalScriptBehavior.Token();
         clientApi = new UltimateArcadeGameClientAPI(gameToken, ExternalScriptBehavior.BaseApiServerName());
         return gameToken;
@@ -211,9 +216,8 @@ public class Arcade : NetworkBehaviour
     {
         Random.InitState(GetSeed());
         token = gameToken;
-        serverApi.ActivatePlayer(gameToken, _ => { }, _ => { });
-
-        PlayerReady();
+        NetworkServer.OnDisconnectedEvent += Disconnected;
+        StartCoroutine(serverApi.ActivatePlayer(gameToken, _ => PlayerReady(), _ => NetworkServer.Destroy(gameObject)));
     }
     
     private void AutoConnect_OnServerReady(string initialSeed)
@@ -342,11 +346,14 @@ public class Arcade : NetworkBehaviour
         StartCoroutine(serverApi.ReportPlayerScore(token, score,
             () =>
             {
-                UADebug.Log($"Score reported {score}");
                 Invoke(nameof(ClientGameOver), 2f);
                 StartCoroutine(serverApi.Shutdown(() => { }, _ => { }));
             },
-            _ => {}
+            _ =>
+            {
+                ClientGameOver();
+                StartCoroutine(serverApi.Shutdown(() => { }, _ => { }));
+            }
             )
         );
     } 
