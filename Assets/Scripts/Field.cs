@@ -9,6 +9,7 @@ using AnttiStarterKit.ScriptableObjects;
 using AnttiStarterKit.Utils;
 using AnttiStarterKit.Visuals;
 using Leaderboards;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Wikipedia;
@@ -34,6 +35,7 @@ public class Field : MonoBehaviour
     [SerializeField] private Wikier wikier;
     [SerializeField] private SoundCollection notes;
     [SerializeField] private GameObject muteIndicator;
+    [SerializeField] private TMP_Text timeLimitWarning, timeLimitWarningOutline;
 
     private Arcade arcade;
 
@@ -51,6 +53,8 @@ public class Field : MonoBehaviour
 
     private Tutorial<TutorialType> tutorial;
     private bool muted;
+
+    private float timeLeft = -1;
 
     private void Awake()
     {
@@ -94,8 +98,21 @@ public class Field : MonoBehaviour
         }
     }
 
+    public void StartCountDown(int minutes)
+    {
+        timeLeft = minutes * 60;
+    }
+
     private void Update()
     {
+        if (timeLeft > 0)
+        {
+            timeLeft -= Time.deltaTime;
+            var minutes = Mathf.FloorToInt(timeLeft / 60f);
+            var seconds = Mathf.Max(0, timeLeft - 60 * minutes - 1);
+            timeLimitWarning.text = timeLimitWarningOutline.text = $"Only <color=#F3DFA2>{minutes}:{seconds:0#}</color> left to finish the game...";
+        }
+        
         if (Application.isEditor && Input.GetKeyDown(KeyCode.D))
         {
             tutorial.Clear();

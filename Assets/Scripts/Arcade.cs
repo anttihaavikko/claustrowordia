@@ -26,6 +26,8 @@ public class Arcade : NetworkBehaviour
     private int moves;
     private int seed;
 
+    private bool ended;
+
     private bool IsGameOver => grid.All().Count(c => c != null) >= 49;
     
     private void Awake()
@@ -64,6 +66,8 @@ public class Arcade : NetworkBehaviour
 
     private IEnumerator Check(int x, int y)
     {
+        if (ended) yield break;
+        
         var rowCards = grid.GetRow(y).ToList();
         var colCards = grid.GetColumn(x).ToList();
         
@@ -100,8 +104,7 @@ public class Arcade : NetworkBehaviour
 
         if (IsGameOver)
         {
-            GameOver();
-            SubmitScore();
+            End();
             yield break;
         }
 
@@ -119,6 +122,14 @@ public class Arcade : NetworkBehaviour
         }
 
         ShowTwists(twists);
+    }
+
+    private void End()
+    {
+        if (ended) return;
+        ended = true;
+        GameOver();
+        SubmitScore();
     }
 
     [TargetRpc]
@@ -223,6 +234,14 @@ public class Arcade : NetworkBehaviour
     private void AutoConnect_OnServerReady(string initialSeed)
     {
         seed = initialSeed.GetHashCode();
+        Invoke(nameof(StartCountDown), 15 * 60f);
+        Invoke(nameof(End), 20 * 60f);
+    }
+
+    [TargetRpc]
+    private void StartCountDown()
+    {
+        Hand.Instance.Field.StartCountDown(5);
     }
 
     private int GetSeed()
@@ -339,8 +358,7 @@ public class Arcade : NetworkBehaviour
             StartCoroutine(Check(x, y));
         }
     }
-
-    [Command]
+    
     private void SubmitScore()
     {
         StartCoroutine(serverApi.ReportPlayerScore(token, score,
