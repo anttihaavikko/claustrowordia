@@ -1,4 +1,5 @@
 using Mirror;
+using UltimateArcade;
 using UnityEngine;
 
 public class ArcadeDisabler : MonoBehaviour
