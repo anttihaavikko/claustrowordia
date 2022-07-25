@@ -851,6 +851,7 @@ GameObject:
   - component: {fileID: 192229211}
   - component: {fileID: 192229212}
   - component: {fileID: 192229213}
+  - component: {fileID: 192229214}
   m_Layer: 6
   m_Name: Field
   m_TagString: Untagged
@@ -1000,6 +1001,34 @@ MonoBehaviour:
   muteIndicator: {fileID: 240342816}
   timeLimitWarning: {fileID: 584634499}
   timeLimitWarningOutline: {fileID: 30165528}
+--- !u!114 &192229214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 192229208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f896f63643242a9b503706154a76dbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  code: endme
+  action:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 192229213}
+        m_TargetAssemblyTypeName: Field, Assembly-CSharp
+        m_MethodName: EndManually
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &196525537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3190,6 +3219,7 @@ MonoBehaviour:
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
   m_OverlapOperation: 0
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
@@ -7978,7 +8008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 894eaa5182eb64ca5afcfef91441454f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  appearAfter: 1.3
+  appearAfter: 0.1
   hideDelay: 0
   silent: 0
   visuals: {fileID: 0}
@@ -8279,6 +8309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit

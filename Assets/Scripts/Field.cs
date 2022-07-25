@@ -270,6 +270,11 @@ public class Field : MonoBehaviour
         AudioManager.Instance.TargetPitch = 0.8f;
     }
 
+    public void EndManually()
+    {
+        arcade.EndManually();
+    }
+
     public void ShowTwists(List<Twist> twists)
     {
         undoButton.Hide();

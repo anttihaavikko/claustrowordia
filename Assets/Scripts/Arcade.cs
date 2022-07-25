@@ -38,6 +38,11 @@ public class Arcade : NetworkBehaviour
         {
             serverApi = new UltimateArcadeGameServerAPI();
             AutoConnect.OnServerReady += AutoConnect_OnServerReady;
+
+            if (Application.isEditor)
+            {
+                AutoConnect_OnServerReady("123");
+            }
         }
 
         if (isClient)
@@ -119,6 +124,12 @@ public class Arcade : NetworkBehaviour
         }
 
         ShowTwists(twists);
+    }
+
+    [Command]
+    public void EndManually()
+    {
+        End();
     }
 
     private void End()
@@ -225,9 +236,22 @@ public class Arcade : NetworkBehaviour
         Random.InitState(GetSeed());
         token = gameToken;
         NetworkServer.OnDisconnectedEvent += Disconnected;
-        StartCoroutine(serverApi.ActivatePlayer(gameToken, _ => PlayerReady(), _ => NetworkServer.Destroy(gameObject)));
+        StartCoroutine(serverApi.ActivatePlayer(gameToken, _ => PlayerReady(), _ => KillNetwork()));
+
+        if (Application.isEditor)
+        {
+            PlayerReady();
+        }
     }
-    
+
+    private void KillNetwork()
+    {
+        if (!Application.isEditor)
+        {
+            NetworkServer.Destroy(gameObject);
+        }
+    }
+
     private void AutoConnect_OnServerReady(string initialSeed)
     {
         seed = initialSeed.GetHashCode();
